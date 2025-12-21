@@ -1,0 +1,54 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Models\Pembayaran;
+class PembayaranController extends Controller
+{
+    public function index()
+    {
+        // Ambil relasi sewa -> penyewa & kamar
+        $pembayaran = \App\Models\Pembayaran::with([
+            'sewa.penyewa', 
+            'sewa.kamar'
+        ])->orderBy('tanggal_pembayaran', 'desc')
+          ->get();
+
+        return view('admin.pembayaran.index', compact('pembayaran'));
+    }
+
+    public function verifikasiIndex()
+    {
+        $pembayaran = \App\Models\Pembayaran::with(['sewa.penyewa', 'sewa.kamar'])
+            ->where('status_pembayaran', 'Sedang Ditinjau')
+            ->orderBy('tanggal_pembayaran', 'desc')
+            ->get();
+
+        return view('admin.pembayaran.verifikasi', compact('pembayaran'));
+    }
+
+    // Detail pembayaran
+    public function verifikasiShow($id)
+    {
+        $item = \App\Models\Pembayaran::with(['sewa.penyewa', 'sewa.kamar'])->findOrFail($id);
+        return view('admin.pembayaran.verifikasi.show', compact('item'));
+    }
+
+    // Update status pembayaran (verifikasi / tolak)
+    public function verifikasiUpdate(Request $request, $id)
+    {
+        $request->validate([
+            'status_pembayaran' => 'required|in:Terverifikasi,Ditolak',
+        ]);
+
+        $pembayaran = \App\Models\Pembayaran::findOrFail($id);
+        $pembayaran->update([
+            'status_pembayaran' => $request->status_pembayaran
+        ]);
+
+        return redirect()->route('admin.pembayaran.verifikasi.index')
+                         ->with('success', 'Status pembayaran berhasil diperbarui.');
+    }
+}

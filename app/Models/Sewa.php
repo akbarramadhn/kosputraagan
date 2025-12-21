@@ -10,14 +10,26 @@ class Sewa extends Model
     protected $primaryKey = 'id_sewa';
     public $timestamps = false;
 
+    protected $fillable = [
+        'id_penyewa',
+        'id_kamar',
+        'tanggal_mulai',
+        'tanggal_selesai',
+        'status_sewa',
+    ];
+
     public function penyewa()
     {
-        return $this->belongsTo(Penyewa::class, 'id_penyewa');
+        return $this->belongsTo(
+            Penyewa::class,
+            'id_penyewa',
+            'id_penyewa'
+        );
     }
 
     public function kamar()
     {
-        return $this->belongsTo(Kamar::class, 'no_kamar');
+        return $this->belongsTo(Kamar::class, 'id_kamar');
     }
 
     public function pembayaran()
