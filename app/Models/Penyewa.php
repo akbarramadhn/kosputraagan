@@ -10,6 +10,7 @@ class Penyewa extends Model
     protected $primaryKey = 'id_penyewa';
     public $incrementing = true;
     protected $keyType = 'int';
+    public $timestamps = false;
 
     protected $fillable = [
         'user_id',
@@ -20,7 +21,7 @@ class Penyewa extends Model
     // RELASI KE USER
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     // RELASI KE SEWA (INI YANG PENTING)

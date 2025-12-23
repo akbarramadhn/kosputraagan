@@ -26,12 +26,6 @@
         <label class="block mb-2">Konfirmasi Password</label>
         <input type="password" name="password_confirmation" class="border rounded p-2 w-full mb-4">
 
-        <label class="block mb-2">Foto Profil</label>
-        @if($user->avatar)
-            <img src="{{ asset('storage/'.$user->avatar) }}" alt="avatar" class="w-24 h-24 rounded mb-2">
-        @endif
-        <input type="file" name="avatar" class="border rounded p-2 w-full mb-4">
-
         <button type="submit" class="bg-teal-700 text-white px-4 py-2 rounded hover:bg-teal-800">
             Simpan Perubahan
         </button>

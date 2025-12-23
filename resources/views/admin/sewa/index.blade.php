@@ -1,33 +1,71 @@
 @extends('layouts.admin')
 
-@section('content')
-<h2 class="text-xl font-semibold mb-4">Status Sewa Kos</h2>
+@section('title', 'Status Sewa Kos')
 
-<table class="w-full border text-sm">
-    <thead class="bg-gray-100">
-        <tr>
-            <th class="border p-2">Penyewa</th>
-            <th class="border p-2">No Kamar</th>
-            <th class="border p-2">Mulai</th>
-            <th class="border p-2">Selesai</th>
-            <th class="border p-2">Status</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach($sewas as $sewa)
-        <tr>
-            <td class="border p-2">{{ $sewa->penyewa->nama_penyewa }}</td>
-            <td class="border p-2">{{ $sewa->kamar->no_kamar }}</td>
-            <td class="border p-2">{{ $sewa->tanggal_mulai }}</td>
-            <td class="border p-2">{{ $sewa->tanggal_selesai }}</td>
-            <td class="border p-2">
-                <span class="px-2 py-1 rounded
-                    {{ $sewa->status_sewa === 'Sewa' ? 'bg-green-200' : 'bg-gray-300' }}">
-                    {{ $sewa->status_sewa }}
-                </span>
-            </td>
-        </tr>
-        @endforeach
-    </tbody>
-</table>
+@section('content')
+<div class="bg-white rounded-lg shadow p-6">
+
+    <h2 class="text-xl font-semibold mb-4">
+        Status Sewa Kos
+    </h2>
+
+    <div class="overflow-x-auto">
+        <table class="w-full text-sm border-collapse">
+            <thead>
+                <tr class="bg-teal-500 text-white text-center">
+                    <th class="p-3">Id Sewa</th>
+                    <th class="p-3">Id Penyewa</th>
+                    <th class="p-3">No. Kamar</th>
+                    <th class="p-3">Tanggal Mulai</th>
+                    <th class="p-3">Tanggal Selesai</th>
+                    <th class="p-3">Tanggal Selesai Lama</th>
+                    <th class="p-3">Status Sewa</th>
+                </tr>
+            </thead>
+
+            <tbody class="bg-[#f5f2ea]">
+                @forelse ($sewa as $item)
+                    <tr class="border-b text-center">
+                        <td class="p-4">{{ $item->id_sewa }}</td>
+                        <td class="p-4">{{ $item->id_penyewa }}</td>
+                        <td class="p-4">{{ $item->no_kamar }}</td>
+
+                        <td class="p-4">
+                            {{ \Carbon\Carbon::parse($item->tanggal_mulai)->format('Y-m-d') }}<br>
+                            <span class="text-xs text-gray-600">
+                                {{ \Carbon\Carbon::parse($item->tanggal_mulai)->format('H:i:s') }}
+                            </span>
+                        </td>
+
+                        <td class="p-4">
+                            {{ \Carbon\Carbon::parse($item->tanggal_selesai)->format('Y-m-d') }}<br>
+                            <span class="text-xs text-gray-600">
+                                {{ \Carbon\Carbon::parse($item->tanggal_selesai)->format('H:i:s') }}
+                            </span>
+                        </td>
+
+                        <td class="p-4">
+                            @if($item->tanggal_selesai_lama)
+                                {{ \Carbon\Carbon::parse($item->tanggal_selesai_lama)->format('Y-m-d') }}
+                            @else
+                                -
+                            @endif
+                        </td>
+
+                        <td class="p-4 font-medium">
+                            {{ $item->status_sewa }}
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="7" class="p-6 text-center text-gray-500">
+                            Belum ada data sewa
+                        </td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+
+</div>
 @endsection

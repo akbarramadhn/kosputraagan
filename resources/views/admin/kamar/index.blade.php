@@ -3,64 +3,74 @@
 @section('title', 'Data Kamar')
 
 @section('content')
-<div class="bg-white p-6 rounded shadow">
+<div class="bg-white rounded-xl shadow p-6">
 
+    {{-- ALERT --}}
     @if(session('success'))
-        <div class="mb-4 p-3 bg-green-100 text-green-700 rounded">
+        <div class="mb-4 p-3 bg-green-100 text-green-700 rounded-lg">
             {{ session('success') }}
         </div>
     @endif
 
-    <div class="flex justify-between items-center mb-4">
-        <h2 class="text-xl font-semibold">Data Kamar</h2>
+    {{-- HEADER --}}
+    <div class="flex justify-between items-center mb-6">
+        <div>
+            <h2 class="text-xl font-semibold text-gray-800">Data Kamar</h2>
+            <p class="text-sm text-gray-500">Daftar seluruh kamar kos</p>
+        </div>
 
         <a href="{{ route('admin.kamar.create') }}"
-           class="bg-blue-600 text-white px-4 py-2 rounded">
+           class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700">
             + Tambah Kamar
         </a>
     </div>
 
-    <table class="w-full border text-sm">
-        <thead>
-            <tr class="bg-gray-100">
-                <th class="border p-2">No</th>
-                <th class="border p-2">Foto</th>
-                <th class="border p-2">Tipe</th>
-                <th class="border p-2">Harga</th>
-                <th class="border p-2">Status</th>
-                <th class="border p-2">Aksi</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse($kamars as $kamar)
-                <tr>
-                    <td class="border p-2 text-center">
-                        {{ $loop->iteration }}
-                    </td>
+    {{-- TABLE --}}
+    <div class="overflow-x-auto">
+        <table class="w-full text-sm text-left">
+            <thead>
+                <tr class="border-b bg-gray-50 text-gray-600">
+                    <th class="p-3">No</th>
+                    <th class="p-3">Foto</th>
+                    <th class="p-3">Tipe</th>
+                    <th class="p-3">Harga</th>
+                    <th class="p-3">Status</th>
+                    <th class="p-3 text-center">Aksi</th>
+                </tr>
+            </thead>
 
-                    <td class="border p-2">
+            <tbody class="divide-y">
+                @forelse($kamars as $kamar)
+                <tr class="hover:bg-gray-50">
+                    <td class="p-3">{{ $loop->iteration }}</td>
+
+                    <td class="p-3">
                         @if($kamar->foto_kos)
                             <img src="{{ asset('storage/'.$kamar->foto_kos) }}"
-                                 class="w-20 rounded">
+                                 class="w-16 h-16 object-cover rounded-lg">
                         @else
                             <span class="text-gray-400">No Image</span>
                         @endif
                     </td>
 
-                    <td class="border p-2">{{ $kamar->tipe_kamar }}</td>
+                    <td class="p-3 font-medium">
+                        {{ $kamar->tipe_kamar }}
+                    </td>
 
-                    <td class="border p-2">
+                    <td class="p-3">
                         Rp {{ number_format($kamar->harga_perbulan,0,',','.') }}
                     </td>
 
-                    <td class="border p-2">
-                        <span class="px-2 py-1 rounded text-white
-                            {{ $kamar->status === 'Kosong' ? 'bg-green-600' : 'bg-red-600' }}">
+                    <td class="p-3">
+                        <span class="px-3 py-1 rounded-full text-xs font-semibold
+                            {{ $kamar->status === 'Kosong'
+                                ? 'bg-green-100 text-green-700'
+                                : 'bg-red-100 text-red-700' }}">
                             {{ $kamar->status }}
                         </span>
                     </td>
 
-                    <td class="border p-2 space-x-2">
+                    <td class="p-3 text-center space-x-3">
                         <a href="{{ route('admin.kamar.edit', $kamar) }}"
                            class="text-blue-600 hover:underline">
                             Edit
@@ -71,7 +81,6 @@
                               class="inline">
                             @csrf
                             @method('DELETE')
-
                             <button onclick="return confirm('Hapus kamar ini?')"
                                     class="text-red-600 hover:underline">
                                 Hapus
@@ -79,14 +88,15 @@
                         </form>
                     </td>
                 </tr>
-            @empty
+                @empty
                 <tr>
-                    <td colspan="6" class="text-center p-4">
+                    <td colspan="6" class="text-center p-6 text-gray-400">
                         Belum ada data kamar
                     </td>
                 </tr>
-            @endforelse
-        </tbody>
-    </table>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
 </div>
 @endsection

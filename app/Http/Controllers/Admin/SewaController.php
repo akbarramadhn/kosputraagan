@@ -9,8 +9,8 @@ class SewaController extends Controller
 {
     public function index()
     {
-        $sewas = Sewa::with(['kamar', 'penyewa'])->get();
+        $sewa = sewa::orderBy('id_sewa', 'desc')->get();
 
-        return view('admin.sewa.index', compact('sewas'));
+        return view('admin.sewa.index', compact('sewa'));
     }
 }

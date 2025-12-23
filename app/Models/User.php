@@ -25,6 +25,6 @@ class User extends Authenticatable
     // PENYEWA
     public function penyewa()
     {
-        return $this->hasOne(Penyewa::class);
+        return $this->hasOne(Penyewa::class, 'user_id', 'id');
     }
 }

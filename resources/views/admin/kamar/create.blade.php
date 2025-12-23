@@ -1,61 +1,126 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl">
-            Tambah Kamar
+@extends('layouts.admin')
+
+@section('page-title', 'Tambah Kamar')
+
+@section('content')
+<div class="bg-white rounded-lg shadow p-6 max-w-4xl">
+
+    {{-- HEADER --}}
+    <div class="mb-6">
+        <h2 class="text-xl font-semibold text-gray-800">
+            Tambah Data Kamar
         </h2>
-    </x-slot>
+        <p class="text-sm text-gray-500">
+            Lengkapi informasi kamar kos
+        </p>
+    </div>
 
-    <div class="p-6 max-w-xl">
-        <form action="{{ route('admin.kamar.store') }}"
-              method="POST"
-              enctype="multipart/form-data"
-              class="space-y-4">
-            @csrf
+    <form action="{{ route('admin.kamar.store') }}" method="POST" enctype="multipart/form-data">
+        @csrf
 
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            {{-- TIPE KAMAR --}}
             <div>
-                <label>Tipe Kamar</label>
-                <select name="tipe_kamar" class="w-full border rounded p-2">
-                    <option value="A">A</option>
-                    <option value="B">B</option>
-                    <option value="C">C</option>
-                </select>
+                <label class="block text-sm font-medium mb-1">
+                    Tipe Kamar
+                </label>
+                <input
+                    type="text"
+                    name="tipe_kamar"
+                    class="w-full border rounded px-3 py-2 focus:ring focus:ring-blue-200"
+                    placeholder="Contoh: A / B / VIP"
+                    required
+                >
             </div>
 
+            {{-- HARGA --}}
             <div>
-                <label>Harga / Bulan</label>
-                <input type="number" name="harga_perbulan"
-                       class="w-full border rounded p-2">
+                <label class="block text-sm font-medium mb-1">
+                    Harga per Bulan
+                </label>
+                <input
+                    type="number"
+                    name="harga_perbulan"
+                    class="w-full border rounded px-3 py-2 focus:ring focus:ring-blue-200"
+                    placeholder="1500000"
+                    required
+                >
             </div>
 
+            {{-- FASILITAS --}}
             <div>
-                <label>Status</label>
-                <select name="status" class="w-full border rounded p-2">
-                    <option value="Kosong">Kosong</option>
-                    <option value="Isi">Isi</option>
-                </select>
+                <label class="block text-sm font-medium mb-1">
+                    Fasilitas
+                </label>
+                <input
+                    type="text"
+                    name="fasilitas"
+                    class="w-full border rounded px-3 py-2"
+                    placeholder="AC, KM Dalam, Lemari"
+                >
             </div>
 
+            {{-- STATUS (READONLY) --}}
             <div>
-                <label>Fasilitas</label>
-                <textarea name="fasilitas"
-                          class="w-full border rounded p-2"></textarea>
+                <label class="block text-sm font-medium mb-1">
+                    Status
+                </label>
+                <input
+                    type="text"
+                    class="w-full bg-gray-100 border rounded px-3 py-2 text-green-700 font-semibold"
+                    value="Kosong"
+                    readonly
+                >
             </div>
 
-            <div>
-                <label>Deskripsi</label>
-                <textarea name="deskripsi"
-                          class="w-full border rounded p-2"></textarea>
+            {{-- DESKRIPSI --}}
+            <div class="md:col-span-2">
+                <label class="block text-sm font-medium mb-1">
+                    Deskripsi
+                </label>
+                <textarea
+                    name="deskripsi"
+                    rows="3"
+                    class="w-full border rounded px-3 py-2"
+                    placeholder="Deskripsi singkat kamar"
+                ></textarea>
             </div>
 
-            <div>
-                <label>Foto Kamar</label>
-                <input type="file" name="foto_kos"
-                       class="w-full border rounded p-2">
+            {{-- FOTO --}}
+            <div class="md:col-span-2">
+                <label class="block text-sm font-medium mb-2">
+                    Foto Kamar
+                </label>
+                <input
+                    type="file"
+                    name="foto_kos"
+                    class="block w-full text-sm text-gray-600"
+                >
+                <p class="text-xs text-gray-400 mt-1">
+                    JPG / PNG, maksimal 2MB
+                </p>
             </div>
 
-            <button class="bg-blue-600 text-white px-4 py-2 rounded">
+        </div>
+
+        {{-- ACTION --}}
+        <div class="flex justify-end gap-3 mt-8">
+            <a
+                href="{{ route('admin.kamar.index') }}"
+                class="px-4 py-2 border rounded text-gray-600 hover:bg-gray-100"
+            >
+                Batal
+            </a>
+
+            <button
+                type="submit"
+                class="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            >
                 Simpan
             </button>
-        </form>
-    </div>
-</x-app-layout>
+        </div>
+
+    </form>
+</div>
+@endsection
