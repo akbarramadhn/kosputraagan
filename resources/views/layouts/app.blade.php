@@ -1,36 +1,45 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ config('app.name', 'Kos Putra Agan') }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+    {{-- Tailwind dari Breeze --}}
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
+<body class="font-sans antialiased">
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    {{-- Navbar --}}
+    <nav class="bg-teal-700 px-8 py-4 flex justify-between items-center">
+        <h1 class="text-white text-xl font-bold">
+            Kos Putra Agan
+        </h1>
 
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
-            @include('layouts.navigation')
+        <div class="flex items-center gap-6">
+            <a href="#" class="text-white hover:underline">Beranda</a>
+            <a href="#" class="text-white hover:underline">Kamar</a>
+            <a href="#" class="text-white hover:underline">Fasilitas</a>
+            <a href="#" class="text-white hover:underline">Kontak</a>
 
-            <!-- Page Heading -->
-            @isset($header)
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endisset
-
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
+            @auth
+                <a href="{{ route('dashboard') }}"
+                   class="bg-yellow-400 px-4 py-2 rounded font-semibold">
+                   Dashboard
+                </a>
+            @else
+                <a href="{{ route('login') }}"
+                   class="bg-yellow-400 px-4 py-2 rounded font-semibold">
+                   Login / SignUp
+                </a>
+            @endauth
         </div>
-    </body>
+    </nav>
+
+    {{-- Content --}}
+    <main>
+        {{ $slot }}
+    </main>
+
+</body>
 </html>
