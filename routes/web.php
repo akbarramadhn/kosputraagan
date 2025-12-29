@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
+use Illuminate\Http\Request;
 
 // Admin Controllers
 use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
@@ -26,9 +27,6 @@ use App\Http\Controllers\Umum\BookingController;
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
-
-use Illuminate\Http\Request;
-
 
 // Umum Routes
 Route::get('/kamar/tipe/{tipe}', [UmumController::class, 'detailTipe'])->name('kamar.detailTipe');

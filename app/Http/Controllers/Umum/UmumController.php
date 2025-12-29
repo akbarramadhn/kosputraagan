@@ -10,10 +10,26 @@ class UmumController extends Controller
 {
     public function index()
     {
-        $roomsA = Kamar::where('tipe_kamar', 'A')->pluck('no_kamar')->values()->toArray();
-        $roomsB = Kamar::where('tipe_kamar', 'B')->pluck('no_kamar')->values()->toArray();
-        $roomsC = Kamar::where('tipe_kamar', 'C')->pluck('no_kamar')->values()->toArray();
+        $roomsA = Kamar::where('tipe_kamar', 'A')
+            ->where('status', 'Kosong')
+            ->orderBy('no_kamar')
+            ->pluck('no_kamar')
+            ->values()
+            ->toArray();
 
+        $roomsB = Kamar::where('tipe_kamar', 'B')
+            ->where('status', 'Kosong')
+            ->orderBy('no_kamar')
+            ->pluck('no_kamar')
+            ->values()
+            ->toArray();
+
+        $roomsC = Kamar::where('tipe_kamar', 'C')
+            ->where('status', 'Kosong')
+            ->orderBy('no_kamar')
+            ->pluck('no_kamar')
+            ->values()
+            ->toArray();
 
         $jumlahKamar = Kamar::count();
         $jumlahPenyewa = Penyewa::count();

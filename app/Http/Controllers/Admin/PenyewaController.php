@@ -12,7 +12,7 @@ class PenyewaController extends Controller
         $penyewas = Penyewa::query()
             ->with('user:id,name,email')
             ->orderBy('id_penyewa')
-            ->paginate(10);
+            ->paginate(5);
 
         return view('admin.penyewa.index', compact('penyewas'));
     }

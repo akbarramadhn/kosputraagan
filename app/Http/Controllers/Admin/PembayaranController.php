@@ -5,27 +5,27 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Pembayaran;
+use App\Models\Kamar;
+
 class PembayaranController extends Controller
 {
     public function index()
     {
-        // Ambil relasi sewa -> penyewa & kamar
-        $pembayaran = \App\Models\Pembayaran::with([
+        $pembayaran = Pembayaran::with([
             'sewa.penyewa', 
             'sewa.kamar'
         ])->orderBy('tanggal_pembayaran', 'desc')
-          ->get();
+          ->paginate(5);
 
         return view('admin.pembayaran.index', compact('pembayaran'));
     }
 
     public function verifikasiIndex()
     {
-        $pembayaran = \App\Models\Pembayaran::with(['sewa.penyewa', 'sewa.kamar'])
+        $pembayaran = Pembayaran::with(['sewa.penyewa', 'sewa.kamar'])
             ->where('status_pembayaran', 'Sedang Ditinjau')
             ->orderBy('tanggal_pembayaran', 'desc')
-            ->get();
-
+            ->paginate(5);
         return view('admin.pembayaran.verifikasi', compact('pembayaran'));
     }
 

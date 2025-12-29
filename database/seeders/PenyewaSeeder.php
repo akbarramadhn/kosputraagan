@@ -11,14 +11,14 @@ class PenyewaSeeder extends Seeder
     {
         DB::table('penyewa')->insert([
             [
-                'user_id' => 2,
+                'user_id' => 4,
                 'no_telp_penyewa' => '082345678901',
                 'status_akun' => 'Terverifikasi',
             ],
             [
-                'user_id' => 3,
+                'user_id' => 5,
                 'no_telp_penyewa' => '089172348112',
-                'status_akun' => 'Menunggu Verifikasi',
+                'status_akun' => 'Terverifikasi',
             ],
         ]);
     }

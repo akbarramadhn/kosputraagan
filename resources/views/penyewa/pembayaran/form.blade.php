@@ -1,4 +1,13 @@
 <x-public-layout>
+    @php
+        $nominalLunas =
+            $draft['sisa_tagihan'] ??
+            $draft['total_bayar'] ??
+            $draft['harga_total'] ??
+            $draft['total'] ??
+            0;
+    @endphp
+
     <div class="min-h-[calc(100vh-120px)] bg-[#f6f3eb] py-10 sm:py-14">
         <div class="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
             <div class="rounded-3xl bg-white p-8 sm:p-10 lg:p-14 border border-slate-200 shadow-2xl">
@@ -68,20 +77,24 @@
                       class="mt-10 space-y-6">
                     @csrf
 
+                    {{-- ✅ PILIH PEMBAYARAN (hanya pilih & lunas) --}}
                     <div>
                         <label class="mb-2 block text-sm font-semibold text-slate-700">Pilih Pembayaran</label>
-                        <select name="tipe_pembayaran" required
-                                class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-slate-800 outline-none transition focus:border-[#006a71] focus:ring-4 focus:ring-[#006a71]/15">
+                        <select id="pilih_pembayaran"
+                                class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-slate-800 outline-none transition focus:border-[#006a71] focus:ring-4 focus:ring-[#006a71]/15"
+                                data-nominal-lunas="{{ $nominalLunas }}">
                             <option value="" selected disabled>-- Pilih --</option>
-                            <option value="Sewa Baru">Sewa Baru</option>
-                            <option value="Perpanjang">Perpanjang</option>
-                            <option value="Pelunasan">Pelunasan</option>
+                            <option value="Lunas">Lunas</option>
                         </select>
+                        <p class="mt-2 text-xs text-slate-500">
+                            Pilih <b>Lunas</b> untuk mengisi otomatis jumlah & metode.
+                        </p>
                     </div>
 
+                    {{-- ⬇️ FIELD ASLI YANG DIKIRIM KE CONTROLLER --}}
                     <div>
                         <label class="mb-2 block text-sm font-semibold text-slate-700">Jumlah Bayar</label>
-                        <input type="number" step="0.01" name="jumlah_bayar" required
+                        <input id="jumlah_bayar" type="number" step="0.01" name="jumlah_bayar" required
                                placeholder="Contoh: 1500000"
                                class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-slate-800 outline-none transition focus:border-[#006a71] focus:ring-4 focus:ring-[#006a71]/15">
                         <p class="mt-2 text-xs text-slate-500">
@@ -91,7 +104,7 @@
 
                     <div>
                         <label class="mb-2 block text-sm font-semibold text-slate-700">Metode Pembayaran</label>
-                        <select name="metode_pembayaran" required
+                        <select id="metode_pembayaran" name="metode_pembayaran" required
                                 class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-slate-800 outline-none transition focus:border-[#006a71] focus:ring-4 focus:ring-[#006a71]/15">
                             <option value="E-Wallet">E-Wallet</option>
                             <option value="Transfer Bank">Transfer Bank</option>
@@ -111,15 +124,6 @@
                         </div>
                     </div>
 
-                    <div>
-                        <label class="mb-2 block text-sm font-semibold text-slate-700">
-                            Jenis Pembayaran <span class="text-slate-400">(opsional)</span>
-                        </label>
-                        <input type="text" name="jenis_pembayaran"
-                               placeholder="Contoh: Bulan pertama / DP / dll"
-                               class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-slate-800 outline-none transition focus:border-[#006a71] focus:ring-4 focus:ring-[#006a71]/15">
-                    </div>
-
                     <button type="submit"
                             class="w-full rounded-2xl bg-[#006a71] px-6 py-4 text-lg font-bold text-white shadow-lg shadow-[#006a71]/25 transition hover:-translate-y-0.5 hover:bg-[#005a60] active:translate-y-0">
                         Bayar
@@ -132,4 +136,32 @@
             </div>
         </div>
     </div>
+
+    {{-- ✅ AUTO ISI SAAT PILIH "LUNAS" --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const pilih  = document.getElementById('pilih_pembayaran');
+            const tipe   = document.getElementById('tipe_pembayaran');
+            const jumlah = document.getElementById('jumlah_bayar');
+            const metode = document.getElementById('metode_pembayaran');
+            const jenis  = document.getElementById('jenis_pembayaran');
+
+            function autofill() {
+                if (pilih.value === 'Lunas') {
+                    const nominal = Number(pilih.dataset.nominalLunas || 0);
+
+                    // auto isi (kecuali bukti pembayaran)
+                    tipe.value = 'Pelunasan';
+                    if (nominal > 0) jumlah.value = nominal;
+
+                    metode.value = 'E-Wallet';
+
+                    // opsional (kalau ga mau, hapus 1 baris ini)
+                    if (jenis && !jenis.value) jenis.value = 'Pelunasan';
+                }
+            }
+
+            pilih.addEventListener('change', autofill);
+        });
+    </script>
 </x-public-layout>

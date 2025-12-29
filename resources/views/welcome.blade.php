@@ -553,7 +553,7 @@
                             alt="M Akbar Ramadhan">
 
                         {{-- WhatsApp --}}
-                        <a href="https://wa.me/6281234567890" target="_blank"
+                        <a href="https://wa.me/6283196390884" target="_blank"
                             class="absolute bottom-6 flex h-12 w-12 items-center justify-center rounded-full bg-blue-600 text-white shadow-lg hover:bg-blue-700 transition">
                             <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
                                 <path
@@ -571,7 +571,7 @@
                 {{-- STAFF 2 --}}
                 <div class="overflow-hidden rounded-2xl bg-white shadow-lg transition hover:-translate-y-2">
                     <div class="relative h-72 bg-[#cfd6e6] flex items-end justify-center">
-                        <img src="{{ asset('adminkos/hany.jpeg') }}" class="h-full w-full object-cover object-top"
+                        <img src="{{ asset('adminkos/hany.jpeg') }}" class="absolute top-0 h-full w-full object-cover"
                             alt="Hany Nadya Fairuz">
                         <a href="https://wa.me/6281386382210" target="_blank"
                             class="absolute bottom-6 flex h-12 w-12 items-center justify-center rounded-full bg-blue-600 text-white shadow-lg hover:bg-blue-700 transition">

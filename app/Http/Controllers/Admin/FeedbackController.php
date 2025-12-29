@@ -12,7 +12,7 @@ class FeedbackController extends Controller
     {
         $feedback = Feedback::with(['penyewa.user', 'kamar'])
             ->orderBy('tanggal_feedback', 'desc')
-            ->get();
+            ->paginate(5);
 
         return view('admin.keluhan.index', compact('feedback'));
     }

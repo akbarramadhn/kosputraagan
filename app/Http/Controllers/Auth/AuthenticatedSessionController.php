@@ -31,7 +31,7 @@ class AuthenticatedSessionController extends Controller
         // PENYEWA -> cek status di tabel penyewa
         if ($user->role === 'penyewa') {
             // ambil status penyewa (aman walau null)
-            $status = optional($user->penyewa)->status;
+            $status = optional($user->penyewa)->status_akun;
 
             // kalau belum ada record penyewa, anggap menunggu
             if ($status === null || $status === 'Menunggu Verifikasi') {

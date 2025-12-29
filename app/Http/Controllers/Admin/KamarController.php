@@ -11,7 +11,7 @@ class KamarController extends Controller
 {
     public function index()
     {
-        $kamars = Kamar::orderBy('no_kamar', 'desc')->get();
+        $kamars = Kamar::orderBy('no_kamar')->get();
         return view('admin.kamar.index', compact('kamars'));
     }
 

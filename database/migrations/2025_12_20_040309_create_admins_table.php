@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id('id_admin');
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('no_telp_admin', 13);
+            $table->timestamps();
         });
 
     }
