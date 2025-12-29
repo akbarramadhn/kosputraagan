@@ -12,10 +12,11 @@ class Sewa extends Model
 
     protected $fillable = [
         'id_penyewa',
-        'id_kamar',
+        'no_kamar',
         'tanggal_mulai',
         'tanggal_selesai',
         'status_sewa',
+        'tanggal_selesai_lama',
     ];
 
     public function penyewa()

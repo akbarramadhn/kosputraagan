@@ -13,7 +13,7 @@
 <div class="flex min-h-screen">
 
     {{-- SIDEBAR --}}
-    <aside id="sidebar" class="w-64 bg-teal-900 text-white transition-all duration-300">
+    <aside id="sidebar" class="w-64 bg-teal-800 text-white transition-all duration-300">
 
         {{-- LOGO --}}
         <div class="flex items-center justify-between px-6 py-4 border-b border-teal-700">

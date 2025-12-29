@@ -1,102 +1,110 @@
 @extends('layouts.admin')
 
-@section('title', 'Data Kamar')
+@section('page-title', 'Data Kamar')
 
 @section('content')
-<div class="bg-white rounded-xl shadow p-6">
 
-    {{-- ALERT --}}
-    @if(session('success'))
-        <div class="mb-4 p-3 bg-green-100 text-green-700 rounded-lg">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    {{-- HEADER --}}
-    <div class="flex justify-between items-center mb-6">
-        <div>
-            <h2 class="text-xl font-semibold text-gray-800">Data Kamar</h2>
-            <p class="text-sm text-gray-500">Daftar seluruh kamar kos</p>
-        </div>
-
-        <a href="{{ route('admin.kamar.create') }}"
-           class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700">
-            + Tambah Kamar
-        </a>
+{{-- ALERT --}}
+@if(session('success'))
+    <div class="mb-4 p-3 bg-green-100 text-green-700 rounded-lg">
+        {{ session('success') }}
     </div>
+@endif
 
-    {{-- TABLE --}}
-    <div class="overflow-x-auto">
+{{-- CARD PUTIH --}}
+<div class="bg-white shadow-md rounded-lg p-6 w-full">
+
+    {{-- TABLE WRAP --}}
+    <div class="overflow-hidden border border-gray-200 rounded-sm">
+
         <table class="w-full text-sm text-left">
-            <thead>
-                <tr class="border-b bg-gray-50 text-gray-600">
-                    <th class="p-3">No</th>
-                    <th class="p-3">Foto</th>
-                    <th class="p-3">Tipe</th>
-                    <th class="p-3">Harga</th>
-                    <th class="p-3">Status</th>
-                    <th class="p-3 text-center">Aksi</th>
+            {{-- HEADER TEAL --}}
+            <thead class="bg-teal-500">
+                <tr class="text-white font-semibold">
+                    <th class="p-4 text-center whitespace-nowrap">Nomor Kamar</th>
+                    <th class="p-4 text-center whitespace-nowrap">Foto Kamar</th>
+                    <th class="p-4 text-center whitespace-nowrap">Tipe Kamar</th>
+                    <th class="p-4 text-center whitespace-nowrap">Harga Perbulan</th>
+                    <th class="p-4 text-center">Deskripsi</th>
+                    <th class="p-4 text-center whitespace-nowrap">Fasilitas</th>
+                    <th class="p-4 text-center whitespace-nowrap">Status</th>
+                    <th class="p-4 text-center whitespace-nowrap">Aksi</th>
                 </tr>
             </thead>
 
-            <tbody class="divide-y">
+            <tbody class="bg-[#f3f0ea]">
                 @forelse($kamars as $kamar)
-                <tr class="hover:bg-gray-50">
-                    <td class="p-3">{{ $loop->iteration }}</td>
+                    <tr class="border-t border-gray-200">
+                        <td class="p-4 text-center">{{ $kamar->no_kamar }}</td>
 
-                    <td class="p-3">
-                        @if($kamar->foto_kos)
-                            <img src="{{ asset('storage/'.$kamar->foto_kos) }}"
-                                 class="w-16 h-16 object-cover rounded-lg">
-                        @else
-                            <span class="text-gray-400">No Image</span>
-                        @endif
-                    </td>
+                        <td class="p-4 text-center">
+                            @if($kamar->foto_kos)
+                                <img src="{{ asset('storage/'.$kamar->foto_kos) }}"
+                                     class="mx-auto h-12 w-20 object-cover rounded-md border border-gray-200">
+                            @else
+                                <span class="text-gray-400">No Image</span>
+                            @endif
+                        </td>
 
-                    <td class="p-3 font-medium">
-                        {{ $kamar->tipe_kamar }}
-                    </td>
+                        <td class="p-4 font-medium text-center">
+                            {{ $kamar->tipe_kamar }}
+                        </td>
 
-                    <td class="p-3">
-                        Rp {{ number_format($kamar->harga_perbulan,0,',','.') }}
-                    </td>
+                        <td class="p-4 whitespace-nowrap text-center">
+                            Rp {{ number_format($kamar->harga_perbulan,0,',','.') }}
+                        </td>
 
-                    <td class="p-3">
-                        <span class="px-3 py-1 rounded-full text-xs font-semibold
-                            {{ $kamar->status === 'Kosong'
-                                ? 'bg-green-100 text-green-700'
-                                : 'bg-red-100 text-red-700' }}">
-                            {{ $kamar->status }}
-                        </span>
-                    </td>
+                        <td class="p-4 text-gray-700 text-center">
+                            {{ $kamar->deskripsi ?? '-' }}
+                        </td>
 
-                    <td class="p-3 text-center space-x-3">
-                        <a href="{{ route('admin.kamar.edit', $kamar) }}"
-                           class="text-blue-600 hover:underline">
-                            Edit
-                        </a>
+                        <td class="p-4 text-gray-700 text-center">
+                            {{ $kamar->fasilitas ?? '-' }}
+                        </td>
 
-                        <form action="{{ route('admin.kamar.destroy', $kamar) }}"
-                              method="POST"
-                              class="inline">
-                            @csrf
-                            @method('DELETE')
-                            <button onclick="return confirm('Hapus kamar ini?')"
-                                    class="text-red-600 hover:underline">
-                                Hapus
-                            </button>
-                        </form>
-                    </td>
-                </tr>
+                        <td class="p-0 text-center font-semibold">
+                            @php $kosong = ($kamar->status === 'Kosong'); @endphp
+                            <div class="{{ $kosong ? 'bg-red-200 text-red-700' : 'bg-green-200 text-green-700' }} py-6">
+                                {{ $kamar->status }}
+                            </div>
+                        </td>
+
+                        <td class="p-4">
+                            <div class="flex items-center justify-center gap-3">
+                                <a href="{{ route('admin.kamar.edit', $kamar) }}"
+                                   class="inline-flex h-9 w-9 items-center justify-center rounded bg-blue-500 text-white hover:bg-blue-600">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </a>
+
+                                <form action="{{ route('admin.kamar.destroy', $kamar) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button onclick="return confirm('Hapus kamar ini?')"
+                                            class="inline-flex h-9 w-9 items-center justify-center rounded bg-red-500 text-white hover:bg-red-600">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
                 @empty
-                <tr>
-                    <td colspan="6" class="text-center p-6 text-gray-400">
-                        Belum ada data kamar
-                    </td>
-                </tr>
+                    <tr>
+                        <td colspan="8" class="p-6 text-center text-gray-500">
+                            Belum ada data kamar
+                        </td>
+                    </tr>
                 @endforelse
             </tbody>
         </table>
     </div>
+
+    {{-- FOOTER --}}
+    <div class="mt-4">
+        <a href="{{ route('admin.kamar.create') }}"
+           class="bg-teal-500 text-white px-5 py-2 rounded-md hover:bg-teal-600">
+            Tambah Kamar
+        </a>
+    </div>
+
 </div>
 @endsection

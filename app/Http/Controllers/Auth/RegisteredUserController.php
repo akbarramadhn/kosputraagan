@@ -56,8 +56,28 @@ class RegisteredUserController extends Controller
             ]);
 
             Auth::login($user);
+
+            Auth::login($user);
+
+            if ($user->role === 'admin') {
+                return redirect()->route('admin.dashboard');
+            }
+
+            if ($user->role === 'penyewa') {
+                $status = optional($user->penyewa)->status;
+
+                if ($status === null || $status === 'Menunggu Verifikasi') {
+                    return redirect('/')->with('info', 'Akun kamu masih menunggu verifikasi admin.');
+                }
+
+                if ($status === 'Terverifikasi') {
+                    return redirect()->route('penyewa.profil');
+                }
+            }
+
+            return redirect('/');
         });
 
-        return redirect()->route('penyewa.dashboard');
+        return redirect('/');
     }
 }

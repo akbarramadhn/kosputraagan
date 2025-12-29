@@ -1,28 +1,43 @@
 @extends('layouts.admin')
 
-@section('content')
-<div class="p-6">
-    <h1 class="text-2xl font-bold mb-4">Data Penyewa</h1>
+@section('page-title', 'Data Penyewa')
 
-    <table class="w-full border">
-        <thead class="bg-gray-100">
-            <tr>
-                <th class="border p-2">Nama</th>
-                <th class="border p-2">Email</th>
-                <th class="border p-2">No Telp</th>
-                <th class="border p-2">Status Akun</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($penyewas as $penyewa)
-            <tr>
-                <td class="border p-2">{{ $penyewa->user->name }}</td>
-                <td class="border p-2">{{ $penyewa->user->email }}</td>
-                <td class="border p-2">{{ $penyewa->no_telp_penyewa }}</td>
-                <td class="border p-2">{{ $penyewa->status_akun }}</td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-</div>
+@section('content')
+    <div class="bg-white shadow-md rounded-lg p-6 w-full">
+
+        <div class="overflow-hidden border border-gray-200 rounded-sm">
+            <table class="w-full text-left">
+                <thead class="bg-teal-500">
+                    <tr class="text-white">
+                        <th class="px-6 py-4 font-semibold text-center whitespace-nowrap">Id Penyewa</th>
+                        <th class="px-6 py-4 font-semibold text-center">Nama</th>
+                        <th class="px-6 py-4 font-semibold text-center whitespace-nowrap">No Telp</th>
+                        <th class="px-6 py-4 font-semibold text-center">Email</th>
+                    </tr>
+                </thead>
+
+                <tbody class="bg-[#f3f0ea]">
+                    @forelse($penyewas as $p)
+                        <tr class="border-b border-gray-200 last:border-none">
+                            <td class="px-6 py-5 text-center">{{ $p->id_penyewa }}</td>
+                            <td class="px-6 py-5 text-center">{{ $p->user->name ?? '-' }}</td>
+                            <td class="px-6 py-5 text-center">{{ $p->no_telp_penyewa ?? '-' }}</td>
+                            <td class="px-6 py-5 text-center">{{ $p->user->email ?? '-' }}</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4" class="px-6 py-10 text-center text-gray-600">
+                                Belum ada data penyewa.
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+
+        <div class="mt-4 flex justify-center">
+            {{ $penyewas->links() }}
+        </div>
+
+    </div>
 @endsection

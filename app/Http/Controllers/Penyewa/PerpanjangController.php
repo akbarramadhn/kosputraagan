@@ -7,7 +7,7 @@ use App\Models\Kamar;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
-class PerpanjangController extends Controller
+class PerpanjangController
 {
     public function index()
     {

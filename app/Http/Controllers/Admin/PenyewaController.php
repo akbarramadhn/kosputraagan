@@ -9,7 +9,11 @@ class PenyewaController extends Controller
 {
     public function index()
     {
-        $penyewas = Penyewa::with('user')->get();
+        $penyewas = Penyewa::query()
+            ->with('user:id,name,email')
+            ->orderBy('id_penyewa')
+            ->paginate(10);
+
         return view('admin.penyewa.index', compact('penyewas'));
     }
 }

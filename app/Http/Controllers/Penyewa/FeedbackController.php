@@ -7,7 +7,7 @@ use App\Models\Feedback;
 use App\Models\Sewa;
 use Illuminate\Http\Request;
 
-class FeedbackController extends Controller
+class FeedbackController
 {
     public function index()
     {

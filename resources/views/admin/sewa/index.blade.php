@@ -1,13 +1,9 @@
 @extends('layouts.admin')
 
-@section('title', 'Status Sewa Kos')
+@section('page-title', 'Status Sewa Kos')
 
 @section('content')
 <div class="bg-white rounded-lg shadow p-6">
-
-    <h2 class="text-xl font-semibold mb-4">
-        Status Sewa Kos
-    </h2>
 
     <div class="overflow-x-auto">
         <table class="w-full text-sm border-collapse">

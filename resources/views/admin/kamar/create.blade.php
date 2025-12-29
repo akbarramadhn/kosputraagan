@@ -1,126 +1,86 @@
 @extends('layouts.admin')
 
-@section('page-title', 'Tambah Kamar')
-
 @section('content')
-<div class="bg-white rounded-lg shadow p-6 max-w-4xl">
+<div class="min-h-screen flex items-center justify-center px-4 py-10">
+    <div class="w-full max-w-2xl bg-white rounded-2xl shadow-xl p-10">
+        <h1 class="text-3xl font-extrabold text-gray-800 text-center mb-10">
+            Tambah Kamar
+        </h1>
 
-    {{-- HEADER --}}
-    <div class="mb-6">
-        <h2 class="text-xl font-semibold text-gray-800">
-            Tambah Data Kamar
-        </h2>
-        <p class="text-sm text-gray-500">
-            Lengkapi informasi kamar kos
-        </p>
-    </div>
+        @if ($errors->any())
+            <div class="mb-6 rounded-xl border border-red-200 bg-red-50 p-4 text-red-700">
+                <ul class="list-disc pl-5 space-y-1">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
-    <form action="{{ route('admin.kamar.store') }}" method="POST" enctype="multipart/form-data">
-        @csrf
+        <form action="{{ route('admin.kamar.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+            @csrf
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-            {{-- TIPE KAMAR --}}
+            {{-- TIPE KAMAR: harus A/B/C --}}
             <div>
-                <label class="block text-sm font-medium mb-1">
-                    Tipe Kamar
-                </label>
-                <input
-                    type="text"
-                    name="tipe_kamar"
-                    class="w-full border rounded px-3 py-2 focus:ring focus:ring-blue-200"
-                    placeholder="Contoh: A / B / VIP"
-                    required
-                >
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Tipe Kamar</label>
+                <select name="tipe_kamar"
+                    class="w-full rounded-xl border border-gray-300 px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-teal-400">
+                    <option value="" disabled {{ old('tipe_kamar') ? '' : 'selected' }}>Pilih tipe</option>
+                    <option value="A" {{ old('tipe_kamar') === 'A' ? 'selected' : '' }}>A</option>
+                    <option value="B" {{ old('tipe_kamar') === 'B' ? 'selected' : '' }}>B</option>
+                    <option value="C" {{ old('tipe_kamar') === 'C' ? 'selected' : '' }}>C</option>
+                </select>
+                <p class="text-xs text-gray-500 mt-2">Harus salah satu: A, B, atau C.</p>
             </div>
 
-            {{-- HARGA --}}
             <div>
-                <label class="block text-sm font-medium mb-1">
-                    Harga per Bulan
-                </label>
-                <input
-                    type="number"
-                    name="harga_perbulan"
-                    class="w-full border rounded px-3 py-2 focus:ring focus:ring-blue-200"
-                    placeholder="1500000"
-                    required
-                >
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Harga Perbulan</label>
+                <input type="number" name="harga_perbulan" value="{{ old('harga_perbulan') }}"
+                    class="w-full rounded-xl border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-teal-400"
+                    placeholder="contoh: 750000">
+                <p class="text-xs text-gray-500 mt-2">Masukkan angka saja (tanpa titik/koma).</p>
             </div>
 
-            {{-- FASILITAS --}}
+            {{-- STATUS: namanya status, value harus Kosong/Isi --}}
             <div>
-                <label class="block text-sm font-medium mb-1">
-                    Fasilitas
-                </label>
-                <input
-                    type="text"
-                    name="fasilitas"
-                    class="w-full border rounded px-3 py-2"
-                    placeholder="AC, KM Dalam, Lemari"
-                >
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Status Kamar</label>
+                <select name="status"
+                    class="w-full rounded-xl border border-gray-300 px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-teal-400">
+                    <option value="" disabled {{ old('status') ? '' : 'selected' }}>Pilih status</option>
+                    <option value="Kosong" {{ old('status') === 'Kosong' ? 'selected' : '' }}>Kosong</option>
+                    <option value="Isi" {{ old('status') === 'Isi' ? 'selected' : '' }}>Isi</option>
+                </select>
             </div>
 
-            {{-- STATUS (READONLY) --}}
             <div>
-                <label class="block text-sm font-medium mb-1">
-                    Status
-                </label>
-                <input
-                    type="text"
-                    class="w-full bg-gray-100 border rounded px-3 py-2 text-green-700 font-semibold"
-                    value="Kosong"
-                    readonly
-                >
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Deskripsi</label>
+                <textarea name="deskripsi" rows="4"
+                    class="w-full rounded-xl border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-teal-400"
+                    placeholder="Tulis deskripsi kamar...">{{ old('deskripsi') }}</textarea>
             </div>
 
-            {{-- DESKRIPSI --}}
-            <div class="md:col-span-2">
-                <label class="block text-sm font-medium mb-1">
-                    Deskripsi
-                </label>
-                <textarea
-                    name="deskripsi"
-                    rows="3"
-                    class="w-full border rounded px-3 py-2"
-                    placeholder="Deskripsi singkat kamar"
-                ></textarea>
+            {{-- FASILITAS: required --}}
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Fasilitas</label>
+                <input type="text" name="fasilitas" value="{{ old('fasilitas') }}"
+                    class="w-full rounded-xl border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-teal-400"
+                    placeholder="contoh: AC, WiFi, Kamar Mandi Dalam">
             </div>
 
-            {{-- FOTO --}}
-            <div class="md:col-span-2">
-                <label class="block text-sm font-medium mb-2">
-                    Foto Kamar
-                </label>
-                <input
-                    type="file"
-                    name="foto_kos"
-                    class="block w-full text-sm text-gray-600"
-                >
-                <p class="text-xs text-gray-400 mt-1">
-                    JPG / PNG, maksimal 2MB
-                </p>
+            {{-- FOTO: namanya foto_kos dan required --}}
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Foto Kamar</label>
+                <div class="rounded-xl border border-gray-300 px-4 py-3">
+                    <input type="file" name="foto_kos" accept="image/*" class="w-full">
+                </div>
+                <p class="text-xs text-gray-500 mt-2">Wajib upload. Maks 2MB.</p>
             </div>
 
-        </div>
-
-        {{-- ACTION --}}
-        <div class="flex justify-end gap-3 mt-8">
-            <a
-                href="{{ route('admin.kamar.index') }}"
-                class="px-4 py-2 border rounded text-gray-600 hover:bg-gray-100"
-            >
-                Batal
-            </a>
-
-            <button
-                type="submit"
-                class="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-            >
-                Simpan
+            <button type="submit"
+                class="w-full rounded-xl bg-teal-600 py-3 font-semibold text-white shadow-lg hover:bg-teal-700 transition">
+                Tambah Kamar
             </button>
-        </div>
-
-    </form>
+        </form>
+    </div>
 </div>
 @endsection
