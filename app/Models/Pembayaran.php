@@ -8,6 +8,7 @@ class Pembayaran extends Model
 {
     protected $table = 'pembayaran';
     protected $primaryKey = 'id_pembayaran';
+    public $timestamps = false;
     protected $fillable = [
         'id_sewa', 'tanggal_pembayaran', 'jumlah_bayar',
         'metode_pembayaran', 'bukti_pembayaran',

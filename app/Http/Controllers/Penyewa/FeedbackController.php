@@ -17,7 +17,7 @@ class FeedbackController
             ->orderByDesc('tanggal_feedback')
             ->get();
 
-        return view('penyewa.keluhan.index', compact('keluhan'));
+        return view('penyewa.keluhan.keluhan', compact('keluhan'));
     }
 
     public function create()

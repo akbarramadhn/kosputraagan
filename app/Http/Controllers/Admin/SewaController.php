@@ -11,6 +11,6 @@ class SewaController extends Controller
     {
         $sewa = sewa::orderBy('id_sewa',)->paginate(5);
 
-        return view('admin.sewa.index', compact('sewa'));
+        return view('admin.sewa.sewa', compact('sewa'));
     }
 }

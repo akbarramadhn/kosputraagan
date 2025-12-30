@@ -55,6 +55,36 @@
 </head>
 
 <body class="font-sans antialiased">
+    @php
+        $showAkunSaya = false;
+        $akunSayaHref = null;
+
+        if (auth()->check()) {
+            $user = auth()->user();
+
+            if (strtolower(trim($user->role ?? '')) === 'penyewa') {
+                $penyewa = $user->penyewa;
+
+                if ($penyewa) {
+                    // ✅ Kalau sudah terverifikasi: Akun Saya -> Profil
+                    if (($penyewa->status ?? null) === 'Terverifikasi') {
+                        $showAkunSaya = true;
+                        $akunSayaHref = route('penyewa.profil');
+                    } else {
+                        // ✅ Kalau belum terverifikasi: Akun Saya hanya muncul jika sudah pernah bayar -> Status
+                        $hasPayment = \App\Models\Pembayaran::join('sewa', 'pembayaran.id_sewa', '=', 'sewa.id_sewa')
+                            ->where('sewa.id_penyewa', $penyewa->id_penyewa)
+                            ->exists();
+
+                        if ($hasPayment) {
+                            $showAkunSaya = true;
+                            $akunSayaHref = route('penyewa.status');
+                        }
+                    }
+                }
+            }
+        }
+    @endphp
 
     <nav class="fixed top-0 z-50 w-full bg-teal-800 px-8 py-4 flex justify-between items-center">
         <h1 class="text-white text-xl font-bold">
@@ -68,34 +98,29 @@
             <a href="#kontak" class="nav-link">Kontak</a>
 
             @auth
-                @php
-                    $user = auth()->user();
-                    $statusPenyewa = optional($user->penyewa)->status; // butuh relasi user->penyewa
-                @endphp
-
-                @if($user->role === 'admin')
+                {{-- ADMIN --}}
+                @if(auth()->user()->role === 'admin')
                     <a href="{{ route('admin.dashboard') }}"
                         class="bg-yellow-400 px-4 py-2 rounded font-semibold hover:bg-yellow-300 transition">
                         Admin Dashboard
                     </a>
-
-                @elseif($user->role === 'penyewa' && $statusPenyewa === 'terverifikasi')
-                    <a href="{{ route('penyewa.profil') }}"
-                        class="bg-yellow-400 px-4 py-2 rounded font-semibold hover:bg-yellow-300 transition">
-                        Profil
-                    </a>
-
-                @else
-                    {{-- penyewa menunggu verifikasi (atau status null) -> tombol logout --}}
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button type="submit"
-                            class="bg-yellow-400 px-4 py-2 rounded font-semibold hover:bg-yellow-300 transition">
-                            Logout
-                        </button>
-                    </form>
                 @endif
 
+                {{-- PENYEWA: tombol Akun Saya (muncul sesuai flow) --}}
+                @if($showAkunSaya)
+                    <a href="{{ $akunSayaHref }}" class="nav-link">
+                        Akun Saya
+                    </a>
+                @endif
+
+                {{-- LOGOUT selalu tampil ketika login --}}
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit"
+                        class="bg-yellow-400 px-4 py-2 rounded font-semibold hover:bg-yellow-300 transition">
+                        Logout
+                    </button>
+                </form>
             @else
                 <a href="{{ route('login') }}"
                     class="bg-yellow-400 px-4 py-2 rounded font-semibold hover:bg-yellow-300 transition">

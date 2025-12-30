@@ -14,6 +14,6 @@ class PenyewaController extends Controller
             ->orderBy('id_penyewa')
             ->paginate(5);
 
-        return view('admin.penyewa.index', compact('penyewas'));
+        return view('admin.penyewa.daftarpenyewa', compact('penyewas'));
     }
 }

@@ -17,7 +17,7 @@ class PembayaranController extends Controller
         ])->orderBy('tanggal_pembayaran', 'desc')
           ->paginate(5);
 
-        return view('admin.pembayaran.index', compact('pembayaran'));
+        return view('admin.pembayaran.history', compact('pembayaran'));
     }
 
     public function verifikasiIndex()
@@ -32,7 +32,7 @@ class PembayaranController extends Controller
     // Detail pembayaran
     public function verifikasiShow($id)
     {
-        $item = \App\Models\Pembayaran::with(['sewa.penyewa', 'sewa.kamar'])->findOrFail($id);
+        $item = Pembayaran::with(['sewa.penyewa', 'sewa.kamar'])->findOrFail($id);
         return view('admin.pembayaran.verifikasi.show', compact('item'));
     }
 
@@ -43,7 +43,7 @@ class PembayaranController extends Controller
             'status_pembayaran' => 'required|in:Terverifikasi,Ditolak',
         ]);
 
-        $pembayaran = \App\Models\Pembayaran::findOrFail($id);
+        $pembayaran = Pembayaran::findOrFail($id);
         $pembayaran->update([
             'status_pembayaran' => $request->status_pembayaran
         ]);

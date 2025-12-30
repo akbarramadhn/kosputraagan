@@ -14,7 +14,7 @@ class FeedbackController extends Controller
             ->orderBy('tanggal_feedback', 'desc')
             ->paginate(5);
 
-        return view('admin.keluhan.index', compact('feedback'));
+        return view('admin.keluhan.keluhan', compact('feedback'));
     }
 
     public function show($id)

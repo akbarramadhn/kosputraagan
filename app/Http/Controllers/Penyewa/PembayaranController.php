@@ -8,6 +8,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 use App\Models\Sewa;
+use App\Models\Kamar;
 use App\Models\Pembayaran;
 
 class PembayaranController extends Controller
@@ -27,7 +28,11 @@ class PembayaranController extends Controller
             return redirect('/#kamar')->with('error', 'Sesi booking kamu sudah habis, silakan booking ulang.');
         }
 
-        return view('penyewa.pembayaran.form', compact('draft'));
+        // ✅ ambil harga kamar dari tabel kamar (harga_perbulan)
+        $hargaKamar = Kamar::where('no_kamar', (int) ($draft['no_kamar'] ?? 0))
+            ->value('harga_perbulan') ?? 0;
+
+        return view('penyewa.pembayaran.form', compact('draft', 'hargaKamar'));
     }
 
     public function store(Request $request)
@@ -43,7 +48,6 @@ class PembayaranController extends Controller
             'metode_pembayaran' => 'required|in:E-Wallet,Transfer Bank,Cash',
             'tipe_pembayaran' => 'required|in:Sewa Baru,Perpanjang,Pelunasan',
             'bukti_pembayaran' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
-            'jenis_pembayaran' => 'nullable|string|max:100',
         ]);
 
         $user = auth()->user();
@@ -79,7 +83,6 @@ class PembayaranController extends Controller
                 'jumlah_bayar' => $data['jumlah_bayar'],
                 'metode_pembayaran' => $data['metode_pembayaran'],
                 'bukti_pembayaran' => $path,
-                'jenis_pembayaran' => $data['jenis_pembayaran'] ?? null,
                 'tenggat_pembayaran' => now()->addHours(24),
                 'status_pembayaran' => 'Sedang Ditinjau',
                 'tipe_pembayaran' => $data['tipe_pembayaran'],
@@ -88,6 +91,35 @@ class PembayaranController extends Controller
 
         session()->forget('draft_booking');
 
-        return redirect('/')->with('success', 'Pembayaran terkirim. Menunggu verifikasi.');
+        return redirect()->route('penyewa.status')
+            ->with('success', 'Pembayaran terkirim. Menunggu verifikasi admin.');
+    }
+
+    public function status()
+    {
+        $user = auth()->user();
+        $penyewa = $user?->penyewa;
+
+        if (!$penyewa) {
+            return redirect('/')->with('error', 'Akun kamu belum terdaftar sebagai penyewa.');
+        }
+
+        $sewa = \App\Models\Sewa::with('kamar')
+            ->where('id_penyewa', $penyewa->id_penyewa)
+            ->latest('id_sewa')
+            ->first();
+
+        $pembayaran = null;
+        if ($sewa) {
+            $pembayaran = \App\Models\Pembayaran::where('id_sewa', $sewa->id_sewa)
+                ->latest('tanggal_pembayaran')
+                ->first();
+        }
+
+        if (!$pembayaran) {
+            return redirect('/')->with('error', 'Kamu belum mengisi form pembayaran.');
+        }
+
+        return view('penyewa.pembayaran.status', compact('user', 'penyewa', 'sewa', 'pembayaran'));
     }
 }

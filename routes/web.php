@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Http\Request;
 
 // Admin Controllers
 use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
@@ -51,7 +50,7 @@ Route::middleware(['auth', 'role:admin'])
     ->name('admin.')
     ->group(function () {
 
-        Route::get('/dashboard', [AdminDashboard::class, 'index'])->name('dashboard');
+        Route::get('/dashboard', [AdminDashboard::class, 'dashboard'])->name('dashboard');
 
         Route::resource('kamar', AdminKamarController::class);
         Route::resource('penyewa', PenyewaController::class)->only(['index']);
@@ -78,7 +77,11 @@ Route::middleware(['auth', 'role:penyewa'])
     ->name('penyewa.')
     ->group(function () {
 
-        Route::get('/profil', [PenyewaProfilController::class, 'profil'])->name('profil');
+        Route::get('/status', [PenyewaPembayaranController::class, 'status'])->name('status');
+
+        Route::get('/profil', [PenyewaProfilController::class, 'profil'])
+            ->middleware('penyewa.verified')
+            ->name('profil');
 
         Route::get('/perpanjang', [PerpanjangController::class, 'index'])->name('perpanjang.index');
         Route::get('/perpanjang/create', [PerpanjangController::class, 'create'])->name('perpanjang.create');

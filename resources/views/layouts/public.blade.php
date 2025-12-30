@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,9 +10,17 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <style>
-        html { scroll-behavior: smooth; }
-        section { scroll-margin-top: 90px; }
-        [x-cloak]{display:none!important}
+        html {
+            scroll-behavior: smooth;
+        }
+
+        section {
+            scroll-margin-top: 90px;
+        }
+
+        [x-cloak] {
+            display: none !important
+        }
     </style>
 </head>
 
@@ -34,7 +43,8 @@
                     </button>
                 </form>
             @else
-                <a href="{{ route('login') }}" class="bg-yellow-400 px-4 py-2 rounded font-semibold hover:bg-yellow-300 transition">
+                <a href="{{ route('login') }}"
+                    class="bg-yellow-400 px-4 py-2 rounded font-semibold hover:bg-yellow-300 transition">
                     Login / SignUp
                 </a>
             @endauth
@@ -45,5 +55,8 @@
         {{ $slot }}
     </main>
 
+    @stack('scripts')
+
 </body>
+
 </html>

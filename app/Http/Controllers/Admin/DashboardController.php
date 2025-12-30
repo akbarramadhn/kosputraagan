@@ -10,7 +10,7 @@ use App\Models\Feedback;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function dashboard()
     {
         $jumlahKamar = Kamar::count();
         $jumlahPenyewa = Penyewa::count();
@@ -29,7 +29,7 @@ class DashboardController extends Controller
             $jumlahPerBulan[$item->bulan - 1] = $item->total;
         }
 
-        return view('admin.dashboard.index', [
+        return view('admin.dashboard.dashboard', [
             'jumlahKamar' => Kamar::count(),
             'jumlahPenyewa' => Penyewa::count(),
             'jumlahSewa' => Sewa::count(),
