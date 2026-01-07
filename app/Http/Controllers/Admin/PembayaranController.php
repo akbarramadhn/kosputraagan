@@ -14,7 +14,7 @@ class PembayaranController extends Controller
         $pembayaran = Pembayaran::with([
             'sewa.penyewa', 
             'sewa.kamar'
-        ])->orderBy('tanggal_pembayaran', 'desc')
+        ])->orderBy('tanggal_pembayaran')
           ->paginate(5);
 
         return view('admin.pembayaran.history', compact('pembayaran'));
