@@ -230,7 +230,7 @@
                             <img src="{{ asset('fotokos/foto4.jpg') }}" class="h-56 w-full object-cover" alt="Tipe C">
                             <span
                                 class="absolute bottom-4 left-4 rounded-lg bg-blue-600 px-4 py-2 font-semibold text-white">
-                                Rp 1.100.000 / Bulan
+                                Rp 1.800.000 / Bulan
                             </span>
                         </div>
 

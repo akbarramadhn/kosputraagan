@@ -30,7 +30,7 @@ class Sewa extends Model
 
     public function kamar()
     {
-        return $this->belongsTo(Kamar::class, 'id_kamar');
+        return $this->belongsTo(Kamar::class, 'no_kamar');
     }
 
     public function pembayaran()

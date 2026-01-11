@@ -46,7 +46,7 @@ class PembayaranController extends Controller
         $data = $request->validate([
             'jumlah_bayar' => 'required|numeric|min:0',
             'metode_pembayaran' => 'required|in:E-Wallet,Transfer Bank,Cash',
-            'tipe_pembayaran' => 'required|in:Sewa Baru,Perpanjang,Pelunasan',
+            'jenis_pembayaran' => 'required|string|in:Lunas',
             'bukti_pembayaran' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
 
@@ -77,6 +77,9 @@ class PembayaranController extends Controller
                 'tanggal_selesai_lama' => $selesai->toDateString(),
             ]);
 
+            Kamar::where('no_kamar', (int) $draft['no_kamar'])
+                ->update(['status' => 'Isi']);
+
             Pembayaran::create([
                 'id_sewa' => $sewa->id_sewa,
                 'tanggal_pembayaran' => now(),
@@ -85,7 +88,7 @@ class PembayaranController extends Controller
                 'bukti_pembayaran' => $path,
                 'tenggat_pembayaran' => now()->addHours(24),
                 'status_pembayaran' => 'Sedang Ditinjau',
-                'tipe_pembayaran' => $data['tipe_pembayaran'],
+                'jenis_pembayaran' => $data['jenis_pembayaran'],
             ]);
         });
 
@@ -104,14 +107,14 @@ class PembayaranController extends Controller
             return redirect('/')->with('error', 'Akun kamu belum terdaftar sebagai penyewa.');
         }
 
-        $sewa = \App\Models\Sewa::with('kamar')
+        $sewa = Sewa::with('kamar')
             ->where('id_penyewa', $penyewa->id_penyewa)
             ->latest('id_sewa')
             ->first();
 
         $pembayaran = null;
         if ($sewa) {
-            $pembayaran = \App\Models\Pembayaran::where('id_sewa', $sewa->id_sewa)
+            $pembayaran = Pembayaran::where('id_sewa', $sewa->id_sewa)
                 ->latest('tanggal_pembayaran')
                 ->first();
         }

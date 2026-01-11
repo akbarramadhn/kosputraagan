@@ -50,7 +50,7 @@
                         <div class="grid grid-cols-12 items-center gap-3 border-b border-dashed border-slate-200 pb-4">
                             <div class="col-span-3 text-slate-600">No. Telepon</div>
                             <div class="col-span-9 flex items-center gap-3">
-                                <span class="text-slate-900">: {{ $penyewa->no_telp ?? '-' }}</span>
+                                <span class="text-slate-900">: {{ $penyewa->no_telp_penyewa ?? '-' }}</span>
                                 {{-- <a href="#" class="text-blue-600 hover:underline">Edit</a> --}}
                             </div>
                         </div>

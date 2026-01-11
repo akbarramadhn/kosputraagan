@@ -1,3 +1,4 @@
+{{-- 
 @extends('layouts.admin')
 
 @section('page-title', 'Detail Verifikasi Pembayaran')
@@ -35,4 +36,5 @@
         </button>
     </form>
 </div>
-@endsection
+@endsection 
+--}}

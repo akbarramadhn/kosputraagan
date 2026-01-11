@@ -64,8 +64,7 @@ Route::middleware(['auth', 'role:admin'])
         Route::put('/keluhan/{id}', [KeluhanController::class, 'update'])->name('keluhan.update');
 
         Route::get('/verifikasi-pembayaran', [PembayaranController::class, 'verifikasiIndex'])->name('pembayaran.verifikasi.index');
-        Route::get('/verifikasi-pembayaran/{id}', [PembayaranController::class, 'verifikasiShow'])->name('pembayaran.verifikasi.show');
-        Route::put('/verifikasi-pembayaran/{id}', [PembayaranController::class, 'verifikasiUpdate'])->name('pembayaran.verifikasi.update');
+        Route::put('/admin/pembayaran/verifikasi/{id}',[PembayaranController::class, 'updateStatus'])->name('pembayaran.verifikasi.update');
 
         Route::get('/profil', [AdminProfilController::class, 'edit'])->name('profil.edit');
         Route::put('/profil', [AdminProfilController::class, 'update'])->name('profil.update');

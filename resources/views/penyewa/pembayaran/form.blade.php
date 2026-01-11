@@ -24,11 +24,11 @@
                             Pilih Pembayaran
                         </label>
                         <select id="pilih_pembayaran"
-                                name="tipe_pembayaran"
+                                name="jenis_pembayaran"
                                 required
                                 class="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-800 focus:border-[#006a71] focus:ring-4 focus:ring-[#006a71]/15">
                             <option value="" selected disabled>-- Pilih --</option>
-                            <option value="Pelunasan">Lunas</option>
+                            <option value="Lunas">Lunas</option>
                         </select>
                     </div>
 
@@ -91,7 +91,7 @@
             if (!pilih || !jumlah) return;
 
             pilih.addEventListener('change', () => {
-                if (pilih.value === 'Pelunasan') {
+                if (pilih.value === 'Lunas') {
                     jumlah.value = HARGA_KAMAR;
                 }
             });
