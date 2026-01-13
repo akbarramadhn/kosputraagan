@@ -7,7 +7,7 @@ use App\Models\Feedback;
 use App\Models\Sewa;
 use Illuminate\Http\Request;
 
-class FeedbackController
+class FeedbackController extends Controller
 {
     public function index()
     {
@@ -15,22 +15,15 @@ class FeedbackController
 
         $keluhan = Feedback::where('id_penyewa', $penyewa->id_penyewa)
             ->orderByDesc('tanggal_feedback')
-            ->get();
+            ->paginate(3);
 
-        return view('penyewa.keluhan.keluhan', compact('keluhan'));
-    }
-
-    public function create()
-    {
-        $penyewa = auth()->user()->penyewa;
-
-        // ambil kamar aktif penyewa
         $sewaAktif = Sewa::with('kamar')
             ->where('id_penyewa', $penyewa->id_penyewa)
-            ->where('status_sewa', 'Aktif')
+            ->where('status_sewa', 'Sewa')
+            ->latest('id_sewa') // biar kalau ada lebih dari 1, ambil yang terbaru
             ->first();
 
-        return view('penyewa.keluhan.create', compact('sewaAktif'));
+        return view('penyewa.keluhan.keluhan', compact('keluhan', 'sewaAktif'));
     }
 
     public function store(Request $request)
@@ -43,7 +36,8 @@ class FeedbackController
 
         $sewaAktif = Sewa::with('kamar')
             ->where('id_penyewa', $penyewa->id_penyewa)
-            ->where('status_sewa', 'Aktif')
+            ->where('status_sewa', 'Sewa')
+            ->latest('id_sewa')
             ->firstOrFail();
 
         Feedback::create([
@@ -51,10 +45,12 @@ class FeedbackController
             'no_kamar' => $sewaAktif->kamar->no_kamar,
             'tanggal_feedback' => now(),
             'isi_feedback' => $request->isi_feedback,
-            'status_feedback' => 'Baru',
+            'status_feedback' => 'Belum Dibaca',
         ]);
 
-        return redirect()->route('penyewa.keluhan.index')
-            ->with('success', 'Keluhan berhasil dikirim');
+        // ✅ jangan dd lagi, redirect balik + kasih pesan sukses
+        return redirect()
+            ->route('penyewa.keluhan.index')
+            ->with('success', 'Keluhan berhasil dikirim.');
     }
 }

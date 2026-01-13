@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Feedback extends Model
 {
+    use HasFactory;
+
     protected $table = 'feedback';
     protected $primaryKey = 'id_feedback';
     public $timestamps = false;
@@ -16,15 +19,18 @@ class Feedback extends Model
         'tanggal_feedback',
         'isi_feedback',
         'status_feedback',
+        'respon_admin',
     ];
+
+    // ================= RELATIONSHIPS =================
 
     public function penyewa()
     {
-        return $this->belongsTo(Penyewa::class, 'id_penyewa');
+        return $this->belongsTo(Penyewa::class, 'id_penyewa', 'id_penyewa');
     }
 
     public function kamar()
     {
-        return $this->belongsTo(Kamar::class, 'no_kamar');
+        return $this->belongsTo(Kamar::class, 'no_kamar', 'no_kamar');
     }
 }

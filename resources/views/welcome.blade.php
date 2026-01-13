@@ -138,7 +138,7 @@
                             </div>
 
                             <p class="mb-4 text-gray-600">
-                                Kamar nyaman dengan AC dan kamar mandi dalam.
+                                Kamar dengan AC dan kamar mandi dalam.
                             </p>
 
                             @php $a = (int) ($sisa['A'] ?? 0); @endphp
@@ -150,18 +150,25 @@
                             </p>
 
                             <div class="flex gap-3">
-                                @auth
-                                    <button type="button"
-                                        class="rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 transition"
-                                        @click.prevent="openBooking('A', @js($roomsA ?? []))">
+                                @if($a > 0)
+                                    @auth
+                                        <button type="button"
+                                            class="rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 transition"
+                                            @click.prevent="openBooking('A', @js($roomsA ?? []))">
+                                            Book Now
+                                        </button>
+                                    @else
+                                        <a href="{{ route('login') }}"
+                                            class="rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 transition">
+                                            Book Now
+                                        </a>
+                                    @endauth
+                                @else
+                                    <button type="button" disabled
+                                        class="rounded-lg bg-gray-300 px-4 py-2 text-white opacity-60 cursor-not-allowed">
                                         Book Now
                                     </button>
-                                @else
-                                    <a href="{{ route('login') }}"
-                                        class="rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 transition">
-                                        Book Now
-                                    </a>
-                                @endauth
+                                @endif
 
                                 <a href="{{ route('kamar.detailTipe', 'A') }}"
                                     class="rounded-lg bg-gray-800 px-4 py-2 text-white hover:bg-gray-900 transition">
@@ -203,18 +210,25 @@
                             </p>
 
                             <div class="flex gap-3">
-                                @auth
-                                    <button type="button"
-                                        class="rounded-lg bg-blue-600 px-6 py-2 text-white shadow hover:bg-blue-700 transition"
-                                        @click.prevent="openBooking('B', @js($roomsB ?? []))">
+                                @if($b > 0)
+                                    @auth
+                                        <button type="button"
+                                            class="rounded-lg bg-blue-600 px-6 py-2 text-white shadow hover:bg-blue-700 transition"
+                                            @click.prevent="openBooking('B', @js($roomsB ?? []))">
+                                            Book Now
+                                        </button>
+                                    @else
+                                        <a href="{{ route('login') }}"
+                                            class="rounded-lg bg-blue-600 px-6 py-2 text-white shadow hover:bg-blue-700 transition">
+                                            Book Now
+                                        </a>
+                                    @endauth
+                                @else
+                                    <button type="button" disabled
+                                        class="rounded-lg bg-gray-300 px-6 py-2 text-white opacity-60 cursor-not-allowed shadow-none">
                                         Book Now
                                     </button>
-                                @else
-                                    <a href="{{ route('login') }}"
-                                        class="rounded-lg bg-blue-600 px-6 py-2 text-white shadow hover:bg-blue-700 transition">
-                                        Book Now
-                                    </a>
-                                @endauth
+                                @endif
 
                                 <a href="{{ route('kamar.detailTipe', 'B') }}"
                                     class="rounded-lg bg-gray-800 px-4 py-2 text-white hover:bg-gray-900 transition">
@@ -255,18 +269,25 @@
                             </p>
 
                             <div class="flex gap-3">
-                                @auth
-                                    <button type="button"
-                                        class="rounded-lg bg-blue-600 px-6 py-2 text-white shadow hover:bg-blue-700 transition"
-                                        @click.prevent="openBooking('C', @js($roomsC ?? []))">
+                                @if($c > 0)
+                                    @auth
+                                        <button type="button"
+                                            class="rounded-lg bg-blue-600 px-6 py-2 text-white shadow hover:bg-blue-700 transition"
+                                            @click.prevent="openBooking('C', @js($roomsC ?? []))">
+                                            Book Now
+                                        </button>
+                                    @else
+                                        <a href="{{ route('login') }}"
+                                            class="rounded-lg bg-blue-600 px-6 py-2 text-white shadow hover:bg-blue-700 transition">
+                                            Book Now
+                                        </a>
+                                    @endauth
+                                @else
+                                    <button type="button" disabled
+                                        class="rounded-lg bg-gray-300 px-6 py-2 text-white opacity-60 cursor-not-allowed shadow-none">
                                         Book Now
                                     </button>
-                                @else
-                                    <a href="{{ route('login') }}"
-                                        class="rounded-lg bg-blue-600 px-6 py-2 text-white shadow hover:bg-blue-700 transition">
-                                        Book Now
-                                    </a>
-                                @endauth
+                                @endif
 
                                 <a href="{{ route('kamar.detailTipe', 'C') }}"
                                     class="rounded-lg bg-gray-800 px-4 py-2 text-white hover:bg-gray-900 transition">
@@ -357,8 +378,8 @@
                 </div>
             </div>
         @endauth
-
     </div>
+
 
     {{-- ===================== ALPINE SCRIPT ===================== --}}
     <script>

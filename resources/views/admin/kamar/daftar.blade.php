@@ -6,73 +6,72 @@
 
 {{-- ALERT --}}
 @if(session('success'))
-    <div class="mb-4 p-3 bg-green-100 text-green-700 rounded-lg">
+    <div class="mb-4 p-3 bg-green-100 text-green-700 rounded-lg text-sm sm:text-base">
         {{ session('success') }}
     </div>
 @endif
 
 {{-- CARD PUTIH --}}
-<div class="bg-white shadow-md rounded-lg p-6 w-full">
+<div class="bg-white shadow-md rounded-lg p-4 sm:p-6 w-full overflow-x-auto">
 
     {{-- TABLE WRAP --}}
-    <div class="overflow-hidden border border-gray-200 rounded-sm">
-
-        <table class="w-full text-sm text-left">
+    <div class="w-full overflow-x-auto border border-gray-200 rounded-sm">
+        <table class="min-w-[700px] w-full text-xs sm:text-sm text-left">
             {{-- HEADER TEAL --}}
             <thead class="bg-teal-500">
                 <tr class="text-white font-semibold">
-                    <th class="p-4 text-center whitespace-nowrap">Nomor Kamar</th>
-                    <th class="p-4 text-center whitespace-nowrap">Foto Kamar</th>
-                    <th class="p-4 text-center whitespace-nowrap">Tipe Kamar</th>
-                    <th class="p-4 text-center whitespace-nowrap">Harga Perbulan</th>
-                    <th class="p-4 text-center">Deskripsi</th>
-                    <th class="p-4 text-center whitespace-nowrap">Fasilitas</th>
-                    <th class="p-4 text-center whitespace-nowrap">Status</th>
-                    <th class="p-4 text-center whitespace-nowrap">Aksi</th>
+                    <th class="p-3 sm:p-4 text-center whitespace-nowrap">Nomor Kamar</th>
+                    <th class="p-3 sm:p-4 text-center whitespace-nowrap">Foto Kamar</th>
+                    <th class="p-3 sm:p-4 text-center whitespace-nowrap">Tipe Kamar</th>
+                    <th class="p-3 sm:p-4 text-center whitespace-nowrap">Harga Perbulan</th>
+                    <th class="p-3 sm:p-4 text-center">Deskripsi</th>
+                    <th class="p-3 sm:p-4 text-center whitespace-nowrap">Fasilitas</th>
+                    <th class="p-3 sm:p-4 text-center whitespace-nowrap">Status</th>
+                    <th class="p-3 sm:p-4 text-center whitespace-nowrap">Aksi</th>
                 </tr>
             </thead>
 
             <tbody class="bg-[#f3f0ea]">
                 @forelse($kamars as $kamar)
-                    <tr class="border-t border-gray-200">
-                        <td class="p-4 text-center">{{ $kamar->no_kamar }}</td>
+                    <tr class="border-t border-gray-200 hover:bg-gray-100 transition">
+                        <td class="p-3 sm:p-4 text-center">{{ $kamar->no_kamar }}</td>
 
-                        <td class="p-4 text-center">
+                        <td class="p-3 sm:p-4 text-center">
                             @if($kamar->foto_kos)
                                 <img src="{{ asset('storage/'.$kamar->foto_kos) }}"
-                                     class="mx-auto h-12 w-20 object-cover rounded-md border border-gray-200">
+                                     class="mx-auto h-10 sm:h-12 w-16 sm:w-20 object-cover rounded-md border border-gray-200">
                             @else
                                 <span class="text-gray-400">No Image</span>
                             @endif
                         </td>
 
-                        <td class="p-4 font-medium text-center">
+                        <td class="p-3 sm:p-4 font-medium text-center">
                             {{ $kamar->tipe_kamar }}
                         </td>
 
-                        <td class="p-4 whitespace-nowrap text-center">
+                        <td class="p-3 sm:p-4 whitespace-nowrap text-center">
                             Rp {{ number_format($kamar->harga_perbulan,0,',','.') }}
                         </td>
 
-                        <td class="p-4 text-gray-700 text-center">
+                        <td class="p-3 sm:p-4 text-gray-700 text-center">
                             {{ $kamar->deskripsi ?? '-' }}
                         </td>
 
-                        <td class="p-4 text-gray-700 text-center">
+                        <td class="p-3 sm:p-4 text-gray-700 text-center">
                             {{ $kamar->fasilitas ?? '-' }}
                         </td>
 
                         <td class="p-0 text-center font-semibold">
                             @php $kosong = ($kamar->status === 'Kosong'); @endphp
-                            <div class="{{ $kosong ? 'bg-red-200 text-red-700' : 'bg-green-200 text-green-700' }} py-6">
+                            <div class="{{ $kosong ? 'bg-red-200 text-red-700' : 'bg-green-200 text-green-700' }} py-4 sm:py-6 text-xs sm:text-sm">
                                 {{ $kamar->status }}
                             </div>
                         </td>
 
-                        <td class="p-4">
-                            <div class="flex items-center justify-center gap-3">
+                        <td class="p-3 sm:p-4">
+                            <div class="flex items-center justify-center gap-2 sm:gap-3">
                                 <a href="{{ route('admin.kamar.edit', $kamar) }}"
-                                   class="inline-flex h-9 w-9 items-center justify-center rounded bg-blue-500 text-white hover:bg-blue-600">
+                                   class="inline-flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded bg-blue-500 text-white hover:bg-blue-600 transition">
                                     <i class="fa-solid fa-pen-to-square"></i>
                                 </a>
 
@@ -80,7 +79,7 @@
                                     @csrf
                                     @method('DELETE')
                                     <button onclick="return confirm('Hapus kamar ini?')"
-                                            class="inline-flex h-9 w-9 items-center justify-center rounded bg-red-500 text-white hover:bg-red-600">
+                                            class="inline-flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded bg-red-500 text-white hover:bg-red-600 transition">
                                         <i class="fa-solid fa-trash"></i>
                                     </button>
                                 </form>
@@ -89,7 +88,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="8" class="p-6 text-center text-gray-500">
+                        <td colspan="8" class="p-6 text-center text-gray-500 text-sm sm:text-base">
                             Belum ada data kamar
                         </td>
                     </tr>
@@ -99,9 +98,9 @@
     </div>
 
     {{-- FOOTER --}}
-    <div class="mt-4">
+    <div class="mt-4 flex justify-center sm:justify-start">
         <a href="{{ route('admin.kamar.create') }}"
-           class="bg-teal-500 text-white px-5 py-2 rounded-md hover:bg-teal-600">
+           class="bg-teal-500 text-white px-4 sm:px-5 py-2 rounded-md hover:bg-teal-600 text-sm sm:text-base transition">
             Tambah Kamar
         </a>
     </div>

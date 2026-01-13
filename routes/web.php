@@ -86,9 +86,11 @@ Route::middleware(['auth', 'role:penyewa'])
         Route::get('/perpanjang/create', [PerpanjangController::class, 'create'])->name('perpanjang.create');
         Route::post('/perpanjang/confirm', [PerpanjangController::class, 'confirm'])->name('perpanjang.confirm');
 
-        Route::get('/keluhan', [KeluhanPenyewaController::class, 'index'])->name('keluhan.index');
-        Route::get('/keluhan/create', [KeluhanPenyewaController::class, 'create'])->name('keluhan.create');
-        Route::post('/keluhan', [KeluhanPenyewaController::class, 'store'])->name('keluhan.store');
+        Route::get('/keluhan', [KeluhanPenyewaController::class, 'index'])
+            ->name('keluhan.index');
+
+        Route::post('/keluhan', [KeluhanPenyewaController::class, 'store'])
+            ->name('keluhan.store');
 
         Route::get('/pembayaran', [PenyewaPembayaranController::class, 'create'])
             ->name('pembayaran.form');

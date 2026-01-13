@@ -3,23 +3,31 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Feedback;
+use Illuminate\Http\Request;
 
 class FeedbackController extends Controller
 {
     public function index()
     {
         $feedback = Feedback::with(['penyewa.user', 'kamar'])
-            ->orderBy('tanggal_feedback', 'desc')
+            ->orderByDesc('tanggal_feedback')
             ->paginate(5);
 
         return view('admin.keluhan.keluhan', compact('feedback'));
     }
 
-    public function show($id)
+    public function update(Request $request, $id)
     {
-        $item = Feedback::with(['penyewa.user', 'kamar'])->findOrFail($id);
-        return view('admin.keluhan.show', compact('item'));
+        $request->validate([
+            'status_feedback' => 'required|in:Belum Dibaca,Sudah Dibaca,Sedang Diproses,Selesai Ditangani',
+        ]);
+
+        $feedback = Feedback::findOrFail($id);
+        $feedback->update([
+            'status_feedback' => $request->status_feedback,
+        ]);
+
+        return back()->with('success', 'Status keluhan berhasil diperbarui');
     }
 }
