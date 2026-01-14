@@ -6,7 +6,7 @@
 <div class="bg-white shadow-md rounded-lg p-4 sm:p-6 w-full overflow-hidden">
 
     {{-- TABLE WRAPPER --}}
-    <div class="overflow-x-auto border border-gray-200 rounded-md">
+    <div class="overflow-x-auto border border-gray-200">
         <table class="min-w-full text-sm sm:text-base text-left">
             <thead class="bg-teal-500">
                 <tr class="text-white">
@@ -54,9 +54,11 @@
     </div>
 
     {{-- PAGINATION --}}
-    <div class="mt-4 sm:mt-6 flex justify-center">
-        {{ $penyewas->links() }}
-    </div>
+    @if ($penyewas->hasPages())
+      <div class="mt-6 flex justify-center">
+        {{ $penyewas->links('components.pagination') }}
+      </div>
+    @endif
 
 </div>
 @endsection

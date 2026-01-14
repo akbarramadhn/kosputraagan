@@ -9,7 +9,7 @@
     </h2>
 
     {{-- TABLE WRAPPER RESPONSIVE --}}
-    <div class="overflow-x-auto border border-gray-200 rounded-lg">
+    <div class="overflow-x-auto border border-gray-200">
       <table class="min-w-[900px] w-full text-xs sm:text-sm border-collapse">
         <thead class="bg-teal-500 text-white">
           <tr>

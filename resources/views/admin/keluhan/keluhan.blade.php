@@ -69,9 +69,11 @@
     </div>
 
     {{-- PAGINATION --}}
-    <div class="mt-4 flex justify-center sm:justify-start">
-        {{ $feedback->links() }}
-    </div>
+    @if ($feedback->hasPages())
+      <div class="mt-6 flex justify-center">
+        {{ $feedback->links('components.pagination') }}
+      </div>
+    @endif
 </div>
 
 <!-- ================= MODAL ================= -->
