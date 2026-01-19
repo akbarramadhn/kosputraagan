@@ -19,6 +19,9 @@ class Sewa extends Model
         'tanggal_selesai_lama',
     ];
 
+    /**
+     * Relasi ke tabel penyewa
+     */
     public function penyewa()
     {
         return $this->belongsTo(
@@ -28,13 +31,28 @@ class Sewa extends Model
         );
     }
 
+    /**
+     * ✅ FIXED
+     * Relasi ke tabel kamar menggunakan no_kamar
+     */
     public function kamar()
     {
-        return $this->belongsTo(Kamar::class, 'no_kamar');
+        return $this->belongsTo(
+            Kamar::class,
+            'no_kamar',   // foreign key di tabel sewa
+            'no_kamar'    // primary key di tabel kamar
+        );
     }
 
+    /**
+     * Relasi ke tabel pembayaran
+     */
     public function pembayaran()
     {
-        return $this->hasMany(Pembayaran::class, 'id_sewa');
+        return $this->hasMany(
+            Pembayaran::class,
+            'id_sewa',
+            'id_sewa'
+        );
     }
 }

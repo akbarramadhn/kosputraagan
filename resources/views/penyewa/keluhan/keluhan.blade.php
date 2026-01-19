@@ -1,5 +1,6 @@
 @extends('layouts.penyewa')
 
+@section('title', 'Keluhan Penyewa')
 @section('page-title', 'Keluhan')
 
 @section('content')

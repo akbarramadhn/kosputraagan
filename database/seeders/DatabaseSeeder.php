@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             PembayaranSeeder::class,
             FeedbackSeeder::class,
             InfoKosSeeder::class,
+            FotoDetailKamarSeeder::class,
         ]);
     }
 }

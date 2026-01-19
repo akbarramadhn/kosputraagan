@@ -122,7 +122,8 @@
                     {{-- ===================== CARD TIPE A ===================== --}}
                     <div class="overflow-hidden rounded-xl bg-white shadow-lg">
                         <div class="relative">
-                            <img src="{{ asset('fotokos/foto1.jpg') }}" class="h-56 w-full object-cover" alt="Tipe A">
+                            <img src="{{ asset('storage/kamar/kamar_1.jpg') }}" class="h-56 w-full object-cover"
+                                alt="Tipe A">
                             <span
                                 class="absolute bottom-4 left-4 rounded-lg bg-blue-600 px-4 py-2 font-semibold text-white">
                                 Rp 1.500.000 / Bulan
@@ -181,7 +182,8 @@
                     {{-- ===================== CARD TIPE B ===================== --}}
                     <div class="overflow-hidden rounded-xl bg-white shadow-lg">
                         <div class="relative">
-                            <img src="{{ asset('fotokos/foto2.jpg') }}" class="h-56 w-full object-cover" alt="Tipe B">
+                            <img src="{{ asset('storage/kamar/kamar_2.jpg') }}" class="h-56 w-full object-cover"
+                                alt="Tipe B">
                             <span
                                 class="absolute bottom-4 left-4 rounded-lg bg-blue-600 px-4 py-2 font-semibold text-white">
                                 Rp 1.200.000 / Bulan
@@ -241,7 +243,8 @@
                     {{-- ===================== CARD TIPE C ===================== --}}
                     <div class="overflow-hidden rounded-xl bg-white shadow-lg">
                         <div class="relative">
-                            <img src="{{ asset('fotokos/foto4.jpg') }}" class="h-56 w-full object-cover" alt="Tipe C">
+                            <img src="{{ asset('storage/kamar/kamar_3.jpg') }}" class="h-56 w-full object-cover"
+                                alt="Tipe C">
                             <span
                                 class="absolute bottom-4 left-4 rounded-lg bg-blue-600 px-4 py-2 font-semibold text-white">
                                 Rp 1.800.000 / Bulan
@@ -362,7 +365,7 @@
                         <!-- Tanggal selesai -->
                         <div>
                             <label class="mb-2 block text-sm font-semibold text-slate-800">Tanggal Selesai:</label>
-                            <input type="date" name="tanggal_selesai" x-model="form.selesai" required
+                            <input type="date" name="tanggal_selesai" x-model="form.selesai" :min="form.mulai" required
                                 class="w-full rounded-lg border border-slate-200 px-4 py-3 text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#006a71]/30" />
                         </div>
 
@@ -388,6 +391,32 @@
                 open: false,
                 rooms: [],
                 form: { tipe: '', no_kamar: '', mulai: '', selesai: '' },
+
+                init() {
+                    // aturan: tanggal selesai = tanggal yang sama bulan depan
+                    this.$watch('form.mulai', (val) => {
+                        if (!val) {
+                            this.form.selesai = ''
+                            return
+                        }
+
+                        const d = new Date(val) // "YYYY-MM-DD"
+                        const originalDay = d.getDate()
+
+                        // geser 1 bulan
+                        d.setMonth(d.getMonth() + 1)
+
+                        // Handle kasus bulan depan tidak punya tanggal itu (mis 31 -> Februari)
+                        // Kalau overflow, JS akan lompat ke bulan berikutnya.
+                        // Jadi kita kembalikan ke "hari terakhir bulan target".
+                        if (d.getDate() !== originalDay) {
+                            // set tanggal ke 0 => hari terakhir bulan sebelumnya (bulan target)
+                            d.setDate(0)
+                        }
+
+                        this.form.selesai = d.toISOString().slice(0, 10)
+                    })
+                },
 
                 openBooking(tipe, roomList) {
                     console.log('tipe:', tipe)
@@ -430,12 +459,8 @@
                         </h2>
 
                         <p class="mb-4 text-gray-300">
-                            Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit.
-                        </p>
-
-                        <p class="text-gray-300">
-                            Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit,
-                            sed stet lorem sit clita duo justo magna dolore erat amet.
+                            Temukan kos impianmu dengan mudah! Kunjungi lokasi kami dan lihat langsung fasilitas nyaman
+                            yang siap menjadi tempat tinggalmu.
                         </p>
                     </div>
 
@@ -569,6 +594,26 @@
                 {{-- STAFF 1 --}}
                 <div class="overflow-hidden rounded-2xl bg-white shadow-lg transition hover:-translate-y-2">
                     <div class="relative h-72 bg-[#cfd6e6] flex items-end justify-center">
+                        <img src="{{ asset('adminkos/hany.jpeg') }}" class="absolute top-0 h-full w-full object-cover"
+                            alt="Hany Nadya Fairuz">
+                        <a href="https://wa.me/6281386382210" target="_blank"
+                            class="absolute bottom-6 flex h-12 w-12 items-center justify-center rounded-full bg-blue-600 text-white shadow-lg hover:bg-blue-700 transition">
+                            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M12.04 2C6.58 2 2.04 6.48 2.04 12c0 1.98.58 3.82 1.58 5.38L2 22l4.8-1.56A9.93 9.93 0 0012.04 22c5.46 0 9.96-4.48 9.96-10S17.5 2 12.04 2z" />
+                            </svg>
+                        </a>
+                    </div>
+
+                    <div class="p-6 text-center">
+                        <h3 class="text-xl font-bold">Hany Nadya Fairuz</h3>
+                        <p class="text-gray-500">Admin</p>
+                    </div>
+                </div>
+
+                {{-- STAFF 2 --}}
+                <div class="overflow-hidden rounded-2xl bg-white shadow-lg transition hover:-translate-y-2">
+                    <div class="relative h-72 bg-[#cfd6e6] flex items-end justify-center">
                         {{-- avatar placeholder --}}
                         <img src="{{ asset('adminkos/akbar.jpeg') }}" class="absolute top-0 h-full w-full object-cover"
                             alt="M Akbar Ramadhan">
@@ -585,26 +630,6 @@
 
                     <div class="p-6 text-center">
                         <h3 class="text-xl font-bold">M Akbar Ramadhan</h3>
-                        <p class="text-gray-500">Admin</p>
-                    </div>
-                </div>
-
-                {{-- STAFF 2 --}}
-                <div class="overflow-hidden rounded-2xl bg-white shadow-lg transition hover:-translate-y-2">
-                    <div class="relative h-72 bg-[#cfd6e6] flex items-end justify-center">
-                        <img src="{{ asset('adminkos/hany.jpeg') }}" class="absolute top-0 h-full w-full object-cover"
-                            alt="Hany Nadya Fairuz">
-                        <a href="https://wa.me/6281386382210" target="_blank"
-                            class="absolute bottom-6 flex h-12 w-12 items-center justify-center rounded-full bg-blue-600 text-white shadow-lg hover:bg-blue-700 transition">
-                            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                                <path
-                                    d="M12.04 2C6.58 2 2.04 6.48 2.04 12c0 1.98.58 3.82 1.58 5.38L2 22l4.8-1.56A9.93 9.93 0 0012.04 22c5.46 0 9.96-4.48 9.96-10S17.5 2 12.04 2z" />
-                            </svg>
-                        </a>
-                    </div>
-
-                    <div class="p-6 text-center">
-                        <h3 class="text-xl font-bold">Hany Nadya Fairuz</h3>
                         <p class="text-gray-500">Admin</p>
                     </div>
                 </div>
@@ -632,47 +657,49 @@
             </div>
         </div>
     </section>
-    <footer id="kontak" class="bg-[#1f1f1f] text-gray-300 pt-20">
-        <div class="max-w-7xl mx-auto px-6">
+    <footer id="kontak" class="bg-[#141414] text-gray-300">
+        <div class="max-w-7xl mx-auto px-6 pt-16 pb-10">
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-14 pb-16 text-center">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-14 text-center md:text-left">
 
                 {{-- BRAND --}}
-                <div class="flex flex-col items-center">
-                    <h2 class="text-white text-4xl font-extrabold mb-6">
+                <div class="flex flex-col items-center md:items-start">
+                    <h2 class="text-white text-4xl font-extrabold mb-5 tracking-wide">
                         Kos Putra Agan
                     </h2>
 
                     <p class="text-gray-400 leading-relaxed max-w-md">
                         Tempat tinggal nyaman dan strategis untuk mahasiswa dan pekerja.
-                        Dilengkapi fasilitas lengkap dan lingkungan aman.
+                        Fasilitas lengkap, lingkungan aman, dan harga terjangkau.
                     </p>
                 </div>
 
                 {{-- MENU --}}
-                <div class="flex flex-col items-center">
-                    <h3 class="text-white text-2xl font-bold mb-6">
+                {{-- MENU --}}
+                <div class="flex flex-col items-center text-center">
+                    <h3 class="text-white text-2xl font-semibold mb-6">
                         Menu
                     </h3>
 
-                    <ul class="space-y-4">
+                    <ul class="space-y-3">
                         <li>
-                            <a href="#beranda" class="hover:text-white transition">
+                            <a href="#beranda" class="inline-block hover:text-white transition-all hover:translate-x-1">
                                 Beranda
                             </a>
                         </li>
                         <li>
-                            <a href="#kamar" class="hover:text-white transition">
+                            <a href="#kamar" class="inline-block hover:text-white transition-all hover:translate-x-1">
                                 Kamar
                             </a>
                         </li>
                         <li>
-                            <a href="#fasilitas" class="hover:text-white transition">
+                            <a href="#fasilitas"
+                                class="inline-block hover:text-white transition-all hover:translate-x-1">
                                 Fasilitas
                             </a>
                         </li>
                         <li>
-                            <a href="#kontak" class="hover:text-white transition">
+                            <a href="#kontak" class="inline-block hover:text-white transition-all hover:translate-x-1">
                                 Kontak
                             </a>
                         </li>
@@ -680,39 +707,49 @@
                 </div>
 
                 {{-- CONTACT --}}
-                <div class="flex flex-col items-center">
-                    <h3 class="text-white text-2xl font-bold mb-6">
+                <div class="flex flex-col items-center md:items-start">
+                    <h3 class="text-white text-2xl font-semibold mb-6">
                         Hubungi Kami
                     </h3>
 
                     <ul class="space-y-4">
-                        <li class="flex items-center justify-center gap-4">
-                            <span class="text-blue-500 text-xl">📞</span>
-                            <span>0812-3456-7890</span>
+                        <li class="flex items-center gap-4">
+                            <i class="fa-solid fa-phone text-teal-400"></i>
+                            <span>0831-9639-0884</span>
                         </li>
 
-                        <li class="flex items-center justify-center gap-4">
-                            <span class="text-blue-500 text-xl">✉️</span>
-                            <span>info@kosagan.com</span>
+                        <li class="flex items-center gap-4">
+                            <i class="fa-solid fa-envelope text-teal-400"></i>
+                            <span>kosputraagan@gmail.com</span>
                         </li>
                     </ul>
 
                     {{-- SOCIAL --}}
-                    <div class="flex justify-center gap-6 mt-6">
-                        <a href="#" class="text-blue-500 text-xl hover:scale-110 transition">📘</a>
-                        <a href="#" class="text-blue-500 text-xl hover:scale-110 transition">📷</a>
-                        <a href="#" class="text-blue-500 text-xl hover:scale-110 transition">💬</a>
+                    <div class="flex gap-5 mt-6">
+                        <a href="#"
+                            class="text-gray-400 hover:text-teal-400 text-xl transition transform hover:scale-110">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="#"
+                            class="text-gray-400 hover:text-teal-400 text-xl transition transform hover:scale-110">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#"
+                            class="text-gray-400 hover:text-teal-400 text-xl transition transform hover:scale-110">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
                     </div>
                 </div>
 
             </div>
 
             {{-- DIVIDER --}}
-            <div class="border-t border-white/10"></div>
+            <div class="border-t border-white/10 mt-14"></div>
 
             {{-- COPYRIGHT --}}
-            <div class="py-6 text-center text-gray-400 text-sm">
-                © {{ date('Y') }} Kos Putra Agan. All rights reserved.
+            <div class="pt-6 text-center text-gray-500 text-sm">
+                © {{ date('Y') }} <span class="text-white font-medium">Kos Putra Agan</span>.
+                All rights reserved.
             </div>
 
         </div>

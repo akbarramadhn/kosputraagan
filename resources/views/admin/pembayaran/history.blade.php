@@ -1,5 +1,6 @@
 @extends('layouts.admin')
 
+@section('title', 'History Pembayaran')
 @section('page-title', 'History Pembayaran')
 
 @section('content')
@@ -25,7 +26,7 @@
           </tr>
         </thead>
 
-        <tbody>
+        <tbody class="bg-[#f5f2ea]">
           @forelse($pembayaran as $item)
             @php
               $jenis = strtolower($item->jenis_pembayaran ?? '');

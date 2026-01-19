@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\FotoDetailKamar;
+use App\Models\Sewa;        // ➕ TAMBAHAN
+use App\Models\Feedback;   // ➕ TAMBAHAN
 
 class Kamar extends Model
 {
@@ -11,34 +13,32 @@ class Kamar extends Model
     protected $primaryKey = 'no_kamar';
     public $incrementing = true;
     protected $keyType = 'int';
-    public $timestamps = false; 
+    public $timestamps = false;
 
     protected $fillable = [
-        'foto_kos',
         'tipe_kamar',
         'harga_perbulan',
         'status',
         'deskripsi',
         'fasilitas',
+        'foto_kos',
     ];
 
-    public function sewa()
-    {
-        return $this->hasMany(Sewa::class, 'no_kamar');
-    }
-
-    public function getRouteKeyName()
-    {
-        return 'no_kamar';
-    }
-
-    public function feedback()
-    {
-        return $this->hasMany(Feedback::class, 'no_kamar');
-    }
-
+    // 🔹 RELASI MULTIPLE FOTO (KODE LAMA)
     public function fotoDetail()
     {
-        return $this->hasMany(FotoDetailKamar::class, 'no_kamar');
+        return $this->hasMany(FotoDetailKamar::class, 'no_kamar', 'no_kamar');
+    }
+
+    // ➕ RELASI SEWA (TAMBAHAN)
+    public function sewa()
+    {
+        return $this->hasMany(Sewa::class, 'no_kamar', 'no_kamar');
+    }
+
+    // ➕ RELASI FEEDBACK (TAMBAHAN)
+    public function feedback()
+    {
+        return $this->hasMany(Feedback::class, 'no_kamar', 'no_kamar');
     }
 }

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>{{ config('app.name', 'Kos Putra Agan') }}</title>
+    <title>Kos Putra Agan - Kos Nyaman Sejagakarsa</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -99,10 +99,12 @@
 
         {{-- Desktop Menu --}}
         <div class="hidden md:flex items-center gap-6">
-            <a href="#beranda" class="nav-link">Beranda</a>
-            <a href="#kamar" class="nav-link">Kamar</a>
-            <a href="#fasilitas" class="nav-link">Fasilitas</a>
-            <a href="#kontak" class="nav-link">Kontak</a>
+            @php $home = url('/'); @endphp
+            <a href="{{ $home }}#beranda" class="nav-link">Beranda</a>
+            <a href="{{ $home }}#kamar" class="nav-link">Kamar</a>
+            <a href="{{ $home }}#fasilitas" class="nav-link">Fasilitas</a>
+            <a href="{{ $home }}#kontak" class="nav-link">Kontak</a>
+
 
             @auth
                 {{-- ADMIN --}}
@@ -139,35 +141,32 @@
         {{-- Mobile Hamburger --}}
         <button type="button"
             class="md:hidden inline-flex items-center justify-center rounded-lg p-2 text-white hover:bg-white/10 transition"
-            @click="open = !open"
-            :aria-expanded="open.toString()"
-            aria-label="Toggle menu">
+            @click="open = !open" :aria-expanded="open.toString()" aria-label="Toggle menu">
             {{-- icon --}}
-            <svg x-show="!open" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                stroke-width="2">
+            <svg x-show="!open" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
             </svg>
-            <svg x-show="open" x-cloak class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor" stroke-width="2">
+            <svg x-show="open" x-cloak class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
         </button>
 
         {{-- Mobile Overlay --}}
-        <div x-show="open" x-cloak x-transition.opacity
-            class="fixed inset-0 z-40 bg-black/50 md:hidden"
-            @click="open = false"
-            @keydown.escape.window="open = false"></div>
+        <div x-show="open" x-cloak x-transition.opacity class="fixed inset-0 z-40 bg-black/50 md:hidden"
+            @click="open = false" @keydown.escape.window="open = false"></div>
 
         {{-- Mobile Panel --}}
         <div x-show="open" x-cloak x-transition
             class="absolute left-0 right-0 top-full z-50 md:hidden bg-teal-800 border-t border-white/15">
             <div class="px-4 py-4 flex flex-col gap-3">
 
-                <a href="#beranda" class="nav-link" @click="open = false">Beranda</a>
-                <a href="#kamar" class="nav-link" @click="open = false">Kamar</a>
-                <a href="#fasilitas" class="nav-link" @click="open = false">Fasilitas</a>
-                <a href="#kontak" class="nav-link" @click="open = false">Kontak</a>
+                @php $home = url('/'); @endphp
+
+                <a href="{{ $home }}#beranda" class="nav-link">Beranda</a>
+                <a href="{{ $home }}#kamar" class="nav-link">Kamar</a>
+                <a href="{{ $home }}#fasilitas" class="nav-link">Fasilitas</a>
+                <a href="{{ $home }}#kontak" class="nav-link">Kontak</a>
 
                 <div class="h-px bg-white/15 my-2"></div>
 

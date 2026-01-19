@@ -9,7 +9,9 @@ class SewaController extends Controller
 {
     public function index()
     {
-        $sewa = sewa::orderBy('id_sewa',)->paginate(5);
+        $sewa = Sewa::with(['kamar', 'penyewa'])
+            ->orderBy('id_sewa', 'desc')
+            ->paginate(5);
 
         return view('admin.sewa.sewa', compact('sewa'));
     }

@@ -1,5 +1,6 @@
 @extends('layouts.admin')
 
+@section('title', 'Verifikasi Pembayaran')
 @section('page-title', 'Verifikasi Pembayaran')
 
 @section('content')
@@ -25,7 +26,7 @@
                 </tr>
             </thead>
 
-            <tbody>
+            <tbody class="bg-[#f5f2ea]">
                 @foreach($pembayaran as $item)
                     @php
                         $penyewa = $item->sewa->penyewa ?? null;

@@ -1,5 +1,6 @@
 @extends('layouts.admin')
 
+@section('title', 'Profil Admin')
 @section('page-title', 'Profil Saya')
 
 @section('content')

@@ -1,45 +1,46 @@
 @extends('layouts.admin')
 
+@section('title', 'Keluhan Penyewa')
 @section('page-title', 'Keluhan Penyewa')
 
 @section('content')
 
-<div class="bg-white rounded-xl shadow p-4 sm:p-6">
-    <h2 class="text-lg sm:text-xl font-semibold mb-4 text-center sm:text-left">Daftar Keluhan Penyewa</h2>
+<div class="bg-white rounded-lg shadow p-4 sm:p-6 md:p-8">
+    <h2 class="text-lg sm:text-xl font-bold text-gray-800 mb-4 text-center sm:text-left">Daftar Keluhan Penyewa</h2>
 
     {{-- TABLE WRAPPER RESPONSIVE --}}
     <div class="overflow-x-auto border border-gray-200 rounded-lg">
         <table class="min-w-[700px] w-full text-xs sm:text-sm text-left">
-            <thead class="bg-gray-100 text-gray-700 uppercase">
+            <thead class="bg-teal-500 text-white">
                 <tr>
                     <th class="px-3 sm:px-4 py-2 sm:py-3 text-center">No</th>
-                    <th class="px-3 sm:px-4 py-2 sm:py-3">Nama Penyewa</th>
-                    <th class="px-3 sm:px-4 py-2 sm:py-3">Kamar</th>
-                    <th class="px-3 sm:px-4 py-2 sm:py-3">Tanggal</th>
-                    <th class="px-3 sm:px-4 py-2 sm:py-3">Keluhan</th>
-                    <th class="px-3 sm:px-4 py-2 sm:py-3">Status</th>
+                    <th class="px-3 sm:px-4 py-2 sm:py-3 text-center">Nama Penyewa</th>
+                    <th class="px-3 sm:px-4 py-2 sm:py-3 text-center">Kamar</th>
+                    <th class="px-3 sm:px-4 py-2 sm:py-3 text-center">Tanggal</th>
+                    <th class="px-3 sm:px-4 py-2 sm:py-3 text-center">Keluhan</th>
+                    <th class="px-3 sm:px-4 py-2 sm:py-3 text-center">Status</th>
                     <th class="px-3 sm:px-4 py-2 sm:py-3 text-center">Aksi</th>
                 </tr>
             </thead>
 
-            <tbody class="divide-y bg-gray-50">
+            <tbody class="bg-[#f5f2ea]">
                 @foreach ($feedback as $item)
                     <tr class="hover:bg-gray-100 transition">
                         <td class="px-3 sm:px-4 py-2 sm:py-3 text-center">{{ $loop->iteration }}</td>
 
-                        <td class="px-3 sm:px-4 py-2 sm:py-3 whitespace-nowrap">
+                        <td class="px-3 sm:px-4 py-2 sm:py-3 text-center">
                             {{ $item->penyewa->user->name ?? '-' }}
                         </td>
 
-                        <td class="px-3 sm:px-4 py-2 sm:py-3 font-medium text-center">
+                        <td class="px-3 sm:px-4 py-2 sm:py-3 text-center">
                             {{ $item->kamar->no_kamar ?? '-' }}
                         </td>
 
-                        <td class="px-3 sm:px-4 py-2 sm:py-3 text-center whitespace-nowrap">
+                        <td class="px-3 sm:px-4 py-2 sm:py-3 text-center">
                             {{ \Carbon\Carbon::parse($item->tanggal_feedback)->format('d M Y') }}
                         </td>
 
-                        <td class="px-3 sm:px-4 py-2 sm:py-3 max-w-[200px] sm:max-w-xs truncate">
+                        <td class="px-3 sm:px-4 py-2 sm:py-3 text-center">
                             {{ $item->isi_feedback }}
                         </td>
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Umum;
 use App\Http\Controllers\Controller;
 use App\Models\Kamar;
 use App\Models\Penyewa;
+use App\Models\FotoDetailKamar;
 
 class UmumController extends Controller
 {
@@ -44,21 +45,24 @@ class UmumController extends Controller
 
     public function detailTipe(string $tipe)
     {
-        // ambil 1 kamar sebagai "representasi detail tipe"
-        $kamar = Kamar::where('tipe_kamar', $tipe)->firstOrFail();
-
-        // galeri foto: ambil semua kamar dengan tipe sama yang punya foto
-        $galeri = Kamar::where('tipe_kamar', $tipe)
-            ->whereNotNull('foto_kos')
+        // ambil 1 kamar kosong utk tipe tsb
+        $kamar = Kamar::where('tipe_kamar', $tipe)
+            ->where('status', 'Kosong')
             ->orderBy('no_kamar')
-            ->get(['no_kamar', 'foto_kos']);
+            ->firstOrFail();
 
-        // kamar kosong tersedia di sidebar
+        // ambil kamar kosong lainnya
         $kamarKosong = Kamar::where('tipe_kamar', $tipe)
             ->where('status', 'Kosong')
             ->orderBy('no_kamar')
             ->get(['no_kamar']);
 
-        return view('umum.detail', compact('kamar', 'galeri', 'kamarKosong'));
+        // 🔥 FOTO DETAIL BERDASARKAN no_kamar (SESUI TABEL KAMU)
+        $detailFotos = FotoDetailKamar::where('no_kamar', $kamar->no_kamar)
+            ->orderBy('id')
+            ->get();
+
+        return view('umum.detail', compact('kamar', 'kamarKosong', 'detailFotos'));
     }
+
 }

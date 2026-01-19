@@ -1,6 +1,7 @@
 @extends('layouts.penyewa')
 
 @section('title', 'Perpanjang Kos')
+@section('page-title', 'Perpanjang Kos')
 
 @section('content')
     <div class="max-w-6xl mx-auto bg-white rounded-xl shadow p-10 min-h-[80vh]">

@@ -6,11 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class FotoDetailKamar extends Model
 {
-    protected $table = 'foto_detail_kamar';
+    protected $table = 'kamar_fotos';
+    protected $primaryKey = 'id_foto';
+    public $timestamps = false;
 
     protected $fillable = [
         'no_kamar',
-        'nama_file',
+        'foto_path',
     ];
 
     public function kamar()
@@ -18,3 +20,4 @@ class FotoDetailKamar extends Model
         return $this->belongsTo(Kamar::class, 'no_kamar');
     }
 }
+

@@ -1,5 +1,7 @@
 @extends('layouts.admin')
 
+
+@section('title', 'Daftar Kamar')
 @section('page-title', 'Data Kamar')
 
 @section('content')
@@ -38,7 +40,7 @@
 
                         <td class="p-3 sm:p-4 text-center">
                             @if($kamar->foto_kos)
-                                <img src="{{ asset('storage/'.$kamar->foto_kos) }}"
+                                <img src="{{ asset('storage/kamar/'.$kamar->foto_kos) }}"
                                      class="mx-auto h-10 sm:h-12 w-16 sm:w-20 object-cover rounded-md border border-gray-200">
                             @else
                                 <span class="text-gray-400">No Image</span>
@@ -96,6 +98,11 @@
             </tbody>
         </table>
     </div>
+    @if ($kamars->hasPages())
+      <div class="mt-6 flex justify-center">
+        {{ $kamars->links('components.pagination') }}
+      </div>
+    @endif
 
     {{-- FOOTER --}}
     <div class="mt-4 flex justify-center sm:justify-start">

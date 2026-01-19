@@ -12,14 +12,22 @@ return new class extends Migration {
     {
         Schema::create('sewa', function (Blueprint $table) {
             $table->id('id_sewa');
+
             $table->foreignId('id_penyewa')
-                ->constrained('penyewa', 'id_penyewa');
+                ->constrained('penyewa', 'id_penyewa')
+                ->onDelete('cascade');
+
             $table->foreignId('no_kamar')
-                ->constrained('kamar', 'no_kamar');
+                ->constrained('kamar', 'no_kamar')
+                ->onDelete('cascade');
+
             $table->dateTime('tanggal_mulai');
             $table->dateTime('tanggal_selesai');
             $table->enum('status_sewa', ['Sewa', 'Selesai']);
             $table->date('tanggal_selesai_lama')->nullable();
+
+            // Tambahkan timestamps untuk kompatibilitas Eloquent
+            $table->timestamps();
         });
     }
 
@@ -28,6 +36,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('sewas');
+        Schema::dropIfExists('sewa');
     }
 };

@@ -17,6 +17,7 @@ use App\Http\Controllers\Penyewa\ProfilController as PenyewaProfilController;
 use App\Http\Controllers\Penyewa\FeedbackController as KeluhanPenyewaController;
 use App\Http\Controllers\Penyewa\PerpanjangController;
 use App\Http\Controllers\Penyewa\PembayaranController as PenyewaPembayaranController;
+use App\Http\Controllers\Penyewa\RiwayatPembayaranController;
 
 // Umum Controller
 use App\Http\Controllers\Umum\UmumController;
@@ -64,10 +65,14 @@ Route::middleware(['auth', 'role:admin'])
         Route::put('/keluhan/{id}', [KeluhanController::class, 'update'])->name('keluhan.update');
 
         Route::get('/verifikasi-pembayaran', [PembayaranController::class, 'verifikasiIndex'])->name('pembayaran.verifikasi.index');
-        Route::put('/admin/pembayaran/verifikasi/{id}',[PembayaranController::class, 'updateStatus'])->name('pembayaran.verifikasi.update');
+        Route::put('/admin/pembayaran/verifikasi/{id}', [PembayaranController::class, 'updateStatus'])->name('pembayaran.verifikasi.update');
 
         Route::get('/profil', [AdminProfilController::class, 'edit'])->name('profil.edit');
         Route::put('/profil', [AdminProfilController::class, 'update'])->name('profil.update');
+
+        Route::get('/sewa-per-tahun/{tahun}', [App\Http\Controllers\Admin\DashboardController::class, 'getSewaPerTahun'])
+        ->name('sewa-per-tahun');
+
     });
 
 // Penyewa Routes
@@ -81,16 +86,33 @@ Route::middleware(['auth', 'role:penyewa'])
         Route::get('/profil', [PenyewaProfilController::class, 'profil'])
             ->middleware('penyewa.verified')
             ->name('profil');
+            
+        Route::put('/profil', [PenyewaProfilController::class, 'update'])
+            ->name('profil.update');
 
-        Route::get('/perpanjang', [PerpanjangController::class, 'index'])->name('perpanjang.index');
-        Route::get('/perpanjang/create', [PerpanjangController::class, 'create'])->name('perpanjang.create');
-        Route::post('/perpanjang/confirm', [PerpanjangController::class, 'confirm'])->name('perpanjang.confirm');
+        Route::get('/perpanjang', [PerpanjangController::class, 'index'])
+            ->name('perpanjang.index');
+
+        Route::get('/perpanjang/create', [PerpanjangController::class, 'create'])
+            ->name('perpanjang.create');
+
+        Route::post('/perpanjang/confirm', [PerpanjangController::class, 'confirm'])
+            ->name('perpanjang.confirm');
+
+        Route::get('/perpanjang/pembayaran', [PerpanjangController::class, 'pembayaran'])
+            ->name('perpanjang.pembayaran');
+
+        Route::post('/perpanjang/pembayaran', [PerpanjangController::class, 'submitPembayaran'])
+            ->name('perpanjang.pembayaran.submit');
 
         Route::get('/keluhan', [KeluhanPenyewaController::class, 'index'])
             ->name('keluhan.index');
 
         Route::post('/keluhan', [KeluhanPenyewaController::class, 'store'])
             ->name('keluhan.store');
+
+        Route::get('/pembayaran/riwayat', [RiwayatPembayaranController::class, 'index'])
+            ->name('pembayaran.riwayatpembayaran');
 
         Route::get('/pembayaran', [PenyewaPembayaranController::class, 'create'])
             ->name('pembayaran.form');
