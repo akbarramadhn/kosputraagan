@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class FotoDetailKamar extends Model
 {
     protected $table = 'kamar_fotos';
-    protected $primaryKey = 'id_foto';
+    protected $primaryKey = 'id';
     public $timestamps = false;
 
     protected $fillable = [

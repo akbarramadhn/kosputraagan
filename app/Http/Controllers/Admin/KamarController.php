@@ -111,22 +111,12 @@ class KamarController extends Controller
     // hapus kamar
     public function destroy(Kamar $kamar)
     {
-        // ➕ CEK SEWA (TAMBAHAN)
-        if ($kamar->sewa()->exists()) {
-            return back()->with('error', 'Kamar tidak bisa dihapus karena masih memiliki data sewa.');
-        }
-
-        // ➕ CEK FEEDBACK (TAMBAHAN)
-        if ($kamar->feedback()->exists()) {
-            return back()->with('error', 'Kamar tidak bisa dihapus karena masih memiliki feedback.');
-        }
-
-        // ===== KODE LAMA (TIDAK DIUBAH) =====
         foreach ($kamar->fotoDetail as $foto) {
             Storage::disk('public')->delete('kamar/' . $foto->foto_path);
             $foto->delete();
         }
 
+        // hapus foto utama
         if ($kamar->foto_kos) {
             Storage::disk('public')->delete('kamar/' . $kamar->foto_kos);
         }
